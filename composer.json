@@ -1,0 +1,23 @@
+{
+    "name": "quinceproject/offers",
+    "description": "Quince Offers: PDF quotes for the products a customer picks, with their own number and a copy kept in the shop",
+    "type": "prestashop-module",
+    "license": "GPL-2.0-only",
+    "authors": [
+        {
+            "name": "Quince Project",
+            "email": "quinceproject@proton.me"
+        }
+    ],
+    "require": {
+        "php": ">=8.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Quince\\Offers\\": "src/"
+        }
+    },
+    "config": {
+        "prepend-autoloader": false
+    }
+}

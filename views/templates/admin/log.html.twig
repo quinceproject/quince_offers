@@ -1,0 +1,238 @@
+{# Dziennik ofert — co, komu i kiedy wysłaliśmy.
+   Ten sam layout i te same komponenty co reszta panelu Quince. #}
+{% extends '@Modules/quince_engine/views/templates/admin/layout.html.twig' %}
+{% import '@Modules/quince_engine/views/templates/admin/_macros/icons.html.twig' as icons %}
+
+{% trans_default_domain 'Modules.Quinceoffers.Admin' %}
+
+{% macro naglowek(klucz, tekst, sort, dir, filters) %}
+    {# Makro nie dziedziczy importów szablonu, więc ikony bierze u siebie. #}
+    {% import '@Modules/quince_engine/views/templates/admin/_macros/icons.html.twig' as icons %}
+
+    {# Kliknięcie w tę samą kolumnę odwraca porządek, w inną — zaczyna od malejącego:
+       przy dacie i kwocie szuka się najpierw tego, co najnowsze i największe. #}
+    {% set nowyKierunek = (sort == klucz and dir == 'DESC') ? 'ASC' : 'DESC' %}
+    <th class="qc-sortable">
+        <a href="{{ path('quince_offers_log', filters|merge({'sort': klucz, 'dir': nowyKierunek})) }}">
+            {{ tekst }}
+            {% if sort == klucz %}
+                <span class="qc-sort"{{ dir == 'ASC' ? ' style="transform:rotate(180deg)"'|raw }}>{{ icons.icon('chevronDown', 12) }}</span>
+            {% endif %}
+        </a>
+    </th>
+{% endmacro %}
+
+{% import _self as kolumna %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('../modules/quince_engine/views/js/vendor/alpine.min.js') ~ qcVer }}" defer></script>
+{% endblock %}
+
+{% block quince_body %}
+<div class="qc-stack" x-data="{ otwarta: null }">
+
+    {# ── Liczby na wierzchu ── #}
+    <div class="qc-form-grid qc-form-grid-3">
+        <div class="qc-card">
+            <div class="qc-card-body">
+                <div class="qc-label">{{ 'Quotes issued'|trans }}</div>
+                <div class="qc-stat">{{ stats.total }}</div>
+            </div>
+        </div>
+        <div class="qc-card">
+            <div class="qc-card-body">
+                <div class="qc-label">{{ 'This month'|trans }}</div>
+                <div class="qc-stat">{{ stats.month }}</div>
+            </div>
+        </div>
+        <div class="qc-card">
+            <div class="qc-card-body">
+                <div class="qc-label">{{ 'Net value this month'|trans }}</div>
+                {# Osobna kwota na walutę: sklep wielowalutowy nie dostaje jednej
+                   liczby, która nie znaczy nic. #}
+                {% if stats.sums is empty %}
+                    <div class="qc-stat">0</div>
+                {% else %}
+                    {% for suma in stats.sums %}
+                        <div class="qc-stat">{{ suma.sum|number_format(2, ',', ' ') }} {{ suma.currency }}</div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {# ── Filtr ── #}
+    <div class="qc-card">
+        <div class="qc-card-body">
+            <form method="get" action="{{ path('quince_offers_log') }}"
+                  style="display:flex; gap:8px; flex-wrap:wrap; align-items:flex-end">
+                <div class="qc-field" style="max-inline-size:320px; margin:0">
+                    <label class="qc-label" for="q-szukaj">{{ 'Quote or customer'|trans }}</label>
+                    <input type="search" class="qc-field-base qc-focusable" id="q-szukaj" name="search"
+                           value="{{ filters.search }}" placeholder="{{ 'Number, email or company'|trans }}">
+                </div>
+                <div class="qc-field" style="max-inline-size:180px; margin:0">
+                    <label class="qc-label" for="q-od">{{ 'From'|trans }}</label>
+                    <input type="date" class="qc-field-base qc-focusable" id="q-od" name="from" value="{{ filters.from }}">
+                </div>
+                <div class="qc-field" style="max-inline-size:180px; margin:0">
+                    <label class="qc-label" for="q-do">{{ 'To'|trans }}</label>
+                    <input type="date" class="qc-field-base qc-focusable" id="q-do" name="to" value="{{ filters.to }}">
+                </div>
+                <button type="submit" class="qc-btn qc-btn-outline">{{ icons.icon('search', 14) }} {{ 'Filter'|trans }}</button>
+                {% if filters.search or filters.from or filters.to %}
+                    <a class="qc-btn qc-btn-text" href="{{ path('quince_offers_log') }}">{{ 'Clear'|trans }}</a>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    {# ── Wiersze ── #}
+    <div class="qc-table-wrap">
+        <table class="qc-table">
+            <thead>
+                <tr>
+                    {{ kolumna.naglowek('number', 'Number'|trans, sort, dir, filters) }}
+                    {{ kolumna.naglowek('date_add', 'Issued'|trans, sort, dir, filters) }}
+                    {{ kolumna.naglowek('email', 'Customer'|trans, sort, dir, filters) }}
+                    <th>{{ 'Items'|trans }}</th>
+                    {{ kolumna.naglowek('total_net', 'Net'|trans, sort, dir, filters) }}
+                    <th>{{ 'Shop'|trans }}</th>
+                    <th style="width:110px">{{ 'File'|trans }}</th>
+                    <th style="width:44px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in rows %}
+                    {# Wiersz z otwartymi szczegółami dostaje wspólne tło ze swoim
+                       blokiem szczegółów, żeby było widać, gdzie kończy się wpis. #}
+                    <tr :class="otwarta === {{ row.id_offer }} && 'qc-row-open'">
+                        <td><strong>{{ row.number }}</strong></td>
+                        <td>{{ row.date_add|date('d.m.Y H:i') }}</td>
+                        <td>
+                            {{ row.email }}
+                            {% if row.customer_name %}<div class="qc-muted">{{ row.customer_name }}</div>{% endif %}
+                            {% if row.phone %}<div class="qc-muted">{{ row.phone }}</div>{% endif %}
+                            {# Oferta gościa nigdy nie jest przypisywana do konta po adresie,
+                               więc wiersz mówi wprost, czy stoi za nią zalogowany klient. #}
+                            <div class="qc-muted">
+                                {{ row.id_customer > 0 ? 'signed in customer'|trans : 'guest'|trans }}
+                            </div>
+                        </td>
+                        <td>{{ row.items }}</td>
+                        <td>{{ row.total_net|number_format(2, ',', ' ') }} <span class="qc-muted">{{ row.currency }}</span></td>
+                        <td>
+                            {{ row.shop_name }}
+                            <div class="qc-muted">{{ row.lang_name }}</div>
+                        </td>
+                        <td>
+                            {# Plik pobiera się drogą panelu, a nie kluczem oferty:
+                               oferta wystawiona zalogowanemu klientowi wpuszcza
+                               kluczem tylko jego. Oferta bez pliku (sprzed generatora
+                               albo z nieudanego składania) daje się złożyć stąd. #}
+                            {% if row.pdf_file %}
+                                <a class="qc-btn qc-btn-outline qc-btn-sm"
+                                   href="{{ path('quince_offers_log_file', {'id': row.id_offer}) }}">
+                                    {{ icons.icon('file', 14) }} {{ 'PDF'|trans }}
+                                </a>
+                            {% else %}
+                                <form method="post" action="{{ path('quince_offers_log_build') }}">
+                                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_offers_log_build') }}">
+                                    <input type="hidden" name="id" value="{{ row.id_offer }}">
+                                    <button type="submit" class="qc-btn qc-btn-text qc-btn-sm">
+                                        {{ icons.icon('refresh', 14) }} {{ 'Build'|trans }}
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <button type="button" class="qc-icon-btn"
+                                    @click="otwarta = otwarta === {{ row.id_offer }} ? null : {{ row.id_offer }}"
+                                    :aria-expanded="otwarta === {{ row.id_offer }} ? 'true' : 'false'"
+                                    aria-label="{{ 'Show the items'|trans }}">
+                                <span :style="otwarta === {{ row.id_offer }} && 'transform:rotate(180deg)'"
+                                      style="display:inline-flex">{{ icons.icon('chevronDown', 14) }}</span>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="qc-row-detail" x-show="otwarta === {{ row.id_offer }}" x-cloak>
+                        <td colspan="8">
+                          <div class="qc-row-detail-box">
+                            <table class="qc-table-inner">
+                                <thead>
+                                    <tr>
+                                        <th>{{ 'Product'|trans }}</th>
+                                        <th>{{ 'Reference'|trans }}</th>
+                                        <th>{{ 'Quantity'|trans }}</th>
+                                        <th>{{ 'Net'|trans }}</th>
+                                        <th>{{ 'Gross'|trans }}</th>
+                                        <th>{{ 'VAT'|trans }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in items[row.id_offer]|default([]) %}
+                                        <tr>
+                                            <td>{{ item.name }}</td>
+                                            <td>{{ item.reference }}</td>
+                                            <td>{{ item.quantity }}</td>
+                                            <td>{{ item.price_net|number_format(2, ',', ' ') }}</td>
+                                            <td>{{ item.price_gross|number_format(2, ',', ' ') }}</td>
+                                            <td>{{ item.tax_rate|number_format(1, ',', ' ') }}%</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="qc-row-detail-foot">
+                                {{ 'Valid until'|trans }}: {{ row.valid_until }}
+                                · {{ 'IP'|trans }}: {{ row.ip }}
+                                {% if row.newsletter %} · {{ 'signed up for the newsletter'|trans }}{% endif %}
+                            </div>
+                          </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="8">
+                            <div class="qc-empty">
+                                {% if filters.search or filters.from or filters.to %}
+                                    {{ 'No quote matches the filter.'|trans }}
+                                {% else %}
+                                    {{ 'No quote has been issued yet. The first one appears here the moment a customer asks for it.'|trans }}
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if pages > 1 %}
+            <div class="qc-table-foot">
+                <span>{{ 'Page %page% of %pages%, %total% quotes'|trans({'%page%': page, '%pages%': pages, '%total%': total}) }}</span>
+                <div class="qc-pagination">
+                    {% if page > 1 %}
+                        <a class="qc-page-btn" href="{{ path('quince_offers_log', filters|merge({'page': page - 1, 'sort': sort, 'dir': dir})) }}">‹</a>
+                    {% endif %}
+
+                    {# Okno pięciu stron wokół bieżącej: pełna lista nie mieści się
+                       w pasku, gdy ofert są tysiące. #}
+                    {% for numer in max(1, page - 2)..min(pages, page + 2) %}
+                        <a class="qc-page-btn{{ numer == page ? ' qc-active' : '' }}"
+                           href="{{ path('quince_offers_log', filters|merge({'page': numer, 'sort': sort, 'dir': dir})) }}">{{ numer }}</a>
+                    {% endfor %}
+
+                    {% if page < pages %}
+                        <a class="qc-page-btn" href="{{ path('quince_offers_log', filters|merge({'page': page + 1, 'sort': sort, 'dir': dir})) }}">›</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% else %}
+            <div class="qc-table-foot">
+                <span>{{ '%total% quotes'|trans({'%total%': total}) }}</span>
+            </div>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

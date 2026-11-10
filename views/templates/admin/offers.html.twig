@@ -1,0 +1,132 @@
+{# Ekran modułu w stylistyce silnika: ten sam layout, te same makra pól.
+   Moduł nie ma własnego CSS-u ani własnego sidebara — bierze je stąd. #}
+{% extends '@Modules/quince_engine/views/templates/admin/layout.html.twig' %}
+{% import '@Modules/quince_engine/views/templates/admin/_macros/icons.html.twig' as icons %}
+{% import '@Modules/quince_engine/views/templates/admin/_macros/fields.html.twig' as fields %}
+
+{% trans_default_domain 'Modules.Quinceoffers.Admin' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('../modules/quince_engine/views/js/vendor/alpine.min.js') ~ qcVer }}" defer></script>
+{% endblock %}
+
+{% block quince_actions %}
+    <button type="submit" form="quince-offers" class="qc-btn qc-btn-primary">
+        {{ icons.icon('check', 14) }} {{ 'Save changes'|trans }}
+    </button>
+{% endblock %}
+
+{% block quince_body %}
+
+{# `qc-stack` rozdziela karty: bez niego stykają się krawędziami i wyglądają
+   jak jedna karta z podwójnym nagłówkiem. #}
+<form id="quince-offers" method="post" action="{{ path('quince_offers_save') }}" class="qc-stack">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_offers_save') }}">
+
+    <div class="qc-card">
+        <div class="qc-card-head">
+            <div>
+                <div class="qc-card-title">{{ 'Numbering and validity'|trans }}</div>
+                <div class="qc-card-desc">{{ 'Every shop counts its quotes on its own and starts from one each month. The number goes on the PDF and into the email.'|trans }}</div>
+            </div>
+        </div>
+        <div class="qc-card-body">
+            <div class="qc-form-grid qc-form-grid-2">
+                <div class="qc-field">
+                    <label class="qc-label" for="offers-prefix">{{ 'Number prefix'|trans }}</label>
+                    <input type="text" id="offers-prefix" name="PREFIX" maxlength="8"
+                           class="qc-field-base qc-focusable" value="{{ settings.PREFIX }}">
+                    <div class="qc-field-note">
+                        {{ 'The first part of the number, before the year and the month, for example OF/2026/09/0001.'|trans }}
+                    </div>
+                </div>
+
+                <div class="qc-field">
+                    <label class="qc-label" for="offers-validity">{{ 'Valid for'|trans }}</label>
+                    <input type="number" id="offers-validity" name="VALIDITY_DAYS" min="1" max="365"
+                           class="qc-field-base qc-focusable" value="{{ settings.VALIDITY_DAYS }}">
+                    <div class="qc-field-note">
+                        {{ 'Days counted from the day the quote is issued. The date goes on the PDF and into the email.'|trans }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="qc-field">
+                <label class="qc-label" for="offers-reply">{{ 'Answers go to'|trans }}</label>
+                <div class="qc-select-wrap">
+                    <select id="offers-reply" name="REPLY_CONTACT" class="qc-field-base qc-select qc-focusable">
+                        {% for sender in senders %}
+                            <option value="{{ sender.id }}"{{ settings.REPLY_CONTACT == sender.id ? ' selected' : '' }}>
+                                {{ sender.label }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    {{ icons.icon('chevronDown', 14, 'qc-select-chevron') }}
+                </div>
+                <div class="qc-field-note">
+                    {{ 'Where the reply from the customer lands. The quote itself always goes out from the shop address, the one the outgoing mail is set up for; another sender address would end up in spam. The list holds the shop address and the contacts from Shop → Contacts.'|trans }}
+                </div>
+            </div>
+
+            {# Kopie wybierane z kontaktów sklepu, a nie wpisywane: adres handlowca
+               i tak żyje w Sklep → Kontakty, a wpisany drugi raz zaczyna żyć
+               własnym życiem. Wybór wielokrotny tym samym komponentem, co przy
+               kategoriach osoby w module kontaktów. #}
+            <div class="qc-field" x-data="{
+                otwarte: false,
+                wybrane: {{ settings.COPY_CONTACTS ? '[' ~ settings.COPY_CONTACTS ~ ']' : '[]' }}.map(String),
+                podpis() {
+                    if (!this.wybrane.length) { return '{{ 'Nobody — the customer only'|trans }}'; }
+                    return this.wybrane.length + ' {{ 'selected'|trans }}';
+                }
+            }">
+                <label class="qc-label">{{ 'Send a copy to'|trans }}</label>
+
+                <div class="qc-multipick" @click.outside="otwarte = false">
+                    <button type="button" class="qc-field-base qc-focusable qc-multipick-btn"
+                            @click="otwarte = !otwarte">
+                        <span class="qc-multipick-label" :class="!wybrane.length && 'qc-empty-label'"
+                              x-text="podpis()"></span>
+                        {{ icons.icon('chevronDown', 14) }}
+                    </button>
+
+                    <div class="qc-multipick-menu" x-show="otwarte" x-cloak>
+                        {% for sender in senders %}
+                            {% if sender.id > 0 %}
+                                <label class="qc-multipick-row">
+                                    <input type="checkbox" name="COPY_CONTACTS[]"
+                                           value="{{ sender.id }}" x-model="wybrane">
+                                    <span>{{ sender.label }}</span>
+                                </label>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="qc-field-note">
+                    {{ 'Who gets a hidden copy of every quote. The list holds the contacts from Shop → Contacts; an address added there shows up here on its own.'|trans }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="qc-card">
+        <div class="qc-card-head">
+            <div>
+                <div class="qc-card-title">{{ 'Texts the customer reads'|trans }}</div>
+                <div class="qc-card-desc">{{ 'Each text has its own wording per language, so a shop selling in two languages does not send one of them the sentence written for the other.'|trans }}</div>
+            </div>
+        </div>
+        <div class="qc-card-body">
+            {{ fields.multilang('EMAIL_SUBJECT', 'Email subject'|trans, languages, texts.EMAIL_SUBJECT, 'Quote {offer_number}', 'What the customer sees in the inbox before opening anything. You can put {offer_number}, {shop_name}, {valid_until} and {customer_name} in it; leave it empty to send the shop name and the number.'|trans) }}
+            {{ fields.multilangArea('EMAIL_BODY', 'Email message'|trans, languages, texts.EMAIL_BODY, '', 'The sentence in the email the quote is attached to.'|trans, 3) }}
+            {{ fields.multilang('PDF_HEADER', 'PDF heading'|trans, languages, texts.PDF_HEADER, '', 'Stands at the top of the first page, next to the number.'|trans) }}
+            {{ fields.multilang('PDF_FOOTER', 'PDF footer'|trans, languages, texts.PDF_FOOTER, '', 'One line at the bottom of every page.'|trans) }}
+            {{ fields.multilangArea('PDF_NOTE', 'Legal note'|trans, languages, texts.PDF_NOTE, '', 'The paragraph saying what the quote is and is not, printed under the prices.'|trans, 3) }}
+        </div>
+    </div>
+
+</form>
+
+{% endblock %}

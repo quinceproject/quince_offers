@@ -1,0 +1,71 @@
+# Ekran ofert.
+#
+# `_legacy_controller` wskazuje zakładkę silnika, bo moduł bez niego nie działa —
+# nie zakładamy własnej zakładki tylko po to, żeby PrestaShop miał gdzie sprawdzić
+# uprawnienia.
+quince_offers:
+  path: quince/offers
+  methods: [GET]
+  defaults:
+    _controller: Quince\Offers\Controller\Admin\OffersController::indexAction
+    _legacy_controller: 'AdminQuince'
+    _legacy_link: 'AdminQuince'
+
+# Dziennik ofert. Osobna trasa, bo filtr, strona i sortowanie muszą mieścić się
+# w adresie — inaczej nie da się wrócić do tych samych wyników ani wysłać ich komuś.
+quince_offers_log:
+  path: quince/offers/log
+  methods: [GET]
+  defaults:
+    _controller: Quince\Offers\Controller\Admin\LogController::indexAction
+    _legacy_controller: 'AdminQuince'
+    _legacy_link: 'AdminQuince'
+
+quince_offers_log_file:
+  path: quince/offers/log/file
+  methods: [GET]
+  defaults:
+    _controller: Quince\Offers\Controller\Admin\LogController::fileAction
+    _legacy_controller: 'AdminQuince'
+    _legacy_link: 'AdminQuince'
+
+quince_offers_log_build:
+  path: quince/offers/log/build
+  methods: [POST]
+  defaults:
+    _controller: Quince\Offers\Controller\Admin\LogController::buildAction
+    _legacy_controller: 'AdminQuince'
+    _legacy_link: 'AdminQuince:save'
+
+# Logotypy partnerów: lista, wgranie pliku i skasowanie wpisu.
+quince_offers_logos:
+  path: quince/offers/logos
+  methods: [GET]
+  defaults:
+    _controller: Quince\Offers\Controller\Admin\LogosController::indexAction
+    _legacy_controller: 'AdminQuince'
+    _legacy_link: 'AdminQuince'
+
+quince_offers_logos_save:
+  path: quince/offers/logos/save
+  methods: [POST]
+  defaults:
+    _controller: Quince\Offers\Controller\Admin\LogosController::saveAction
+    _legacy_controller: 'AdminQuince'
+    _legacy_link: 'AdminQuince:save'
+
+quince_offers_logos_delete:
+  path: quince/offers/logos/delete
+  methods: [POST]
+  defaults:
+    _controller: Quince\Offers\Controller\Admin\LogosController::deleteAction
+    _legacy_controller: 'AdminQuince'
+    _legacy_link: 'AdminQuince:delete'
+
+quince_offers_save:
+  path: quince/offers/save
+  methods: [POST]
+  defaults:
+    _controller: Quince\Offers\Controller\Admin\OffersController::saveAction
+    _legacy_controller: 'AdminQuince'
+    _legacy_link: 'AdminQuince:save'

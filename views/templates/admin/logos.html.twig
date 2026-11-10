@@ -1,0 +1,140 @@
+{# Logotypy partnerów — znak firmowy na ofercie, dobierany po domenie adresu.
+   Ten sam layout i te same komponenty co reszta panelu Quince. #}
+{% extends '@Modules/quince_engine/views/templates/admin/layout.html.twig' %}
+{% import '@Modules/quince_engine/views/templates/admin/_macros/icons.html.twig' as icons %}
+
+{% trans_default_domain 'Modules.Quinceoffers.Admin' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('../modules/quince_engine/views/js/vendor/alpine.min.js') ~ qcVer }}" defer></script>
+{% endblock %}
+
+{% block quince_intro %}
+    <div class="qc-alert qc-alert-info">
+        {{ icons.icon('info', 18, 'qc-alert-icon') }}
+        <div>
+            {{ 'A quote for a partner carries their logo. The shop picks it by the domain of the email address the customer types in, so nobody has to choose anything when sending.'|trans }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block quince_body %}
+<div class="qc-stack">
+
+    {# ── Nowy logotyp ── #}
+    <div class="qc-card" x-data="{ nazwaPliku: '', podglad: '',
+        wybierz(zdarzenie) {
+            const plik = zdarzenie.target.files[0];
+            if (!plik) { return; }
+            this.nazwaPliku = plik.name;
+            this.podglad = URL.createObjectURL(plik);
+        } }">
+        <div class="qc-card-head">
+            <div>
+                <div class="qc-card-title">{{ 'Add a partner'|trans }}</div>
+                <div class="qc-card-desc">{{ 'The domain without www, for example partner.com. Every address at that domain gets this logo on the quote.'|trans }}</div>
+            </div>
+        </div>
+        <div class="qc-card-body">
+            <form method="post" action="{{ path('quince_offers_logos_save') }}" enctype="multipart/form-data">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_offers_logos_save') }}">
+                <div class="qc-form-grid qc-form-grid-2">
+                    <div class="qc-field">
+                        <label class="qc-label" for="q-domain">{{ 'Domain'|trans }}</label>
+                        <input type="text" id="q-domain" name="domain" required
+                               class="qc-field-base qc-focusable" placeholder="partner.com">
+                    </div>
+
+                    <div class="qc-field">
+                        <label class="qc-label">{{ 'Logo'|trans }}</label>
+
+                        {# Pole pliku jest schowane, a klika się w przycisk: goły
+                           `input type=file` w panelu nie wygląda na nic, na co
+                           można kliknąć, i różni się w każdej przeglądarce. #}
+                        <div class="qc-upload">
+                            <span class="qc-upload-thumb">
+                                <template x-if="podglad">
+                                    <img :src="podglad" alt="">
+                                </template>
+                                <template x-if="!podglad">
+                                    <span>{{ icons.icon('image', 18) }}</span>
+                                </template>
+                            </span>
+
+                            <div class="qc-upload-info">
+                                <div class="qc-upload-name" x-text="nazwaPliku || '{{ 'No file chosen'|trans }}'"></div>
+                                <div>{{ 'JPG, PNG or WEBP, up to 1 MB.'|trans }}</div>
+                            </div>
+
+                            <div class="qc-upload-actions">
+                                <button type="button" class="qc-btn qc-btn-outline" @click="$refs.plik.click()">
+                                    {{ icons.icon('upload', 14) }} {{ 'Choose a file'|trans }}
+                                </button>
+                            </div>
+
+                            <input type="file" x-ref="plik" hidden name="logo" required
+                                   accept="image/jpeg,image/png,image/webp"
+                                   @change="wybierz($event)">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qc-form-actions">
+                    <button type="submit" class="qc-btn qc-btn-primary">
+                        {{ icons.icon('plus', 14) }} {{ 'Add the partner'|trans }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {# ── Lista ── #}
+    <div class="qc-table-wrap">
+        <table class="qc-table">
+            <thead>
+                <tr>
+                    <th style="width:120px">{{ 'Logo'|trans }}</th>
+                    <th>{{ 'Domain'|trans }}</th>
+                    <th>{{ 'File'|trans }}</th>
+                    <th style="width:44px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for logo in logos %}
+                    <tr>
+                        <td>
+                            {% if logo.exists %}
+                                <img src="{{ logo.url }}" alt="" style="max-height:32px;max-width:100px">
+                            {% else %}
+                                <span class="qc-muted">{{ 'file missing'|trans }}</span>
+                            {% endif %}
+                        </td>
+                        <td><strong>{{ logo.domain }}</strong></td>
+                        <td class="qc-muted">{{ logo.file }}</td>
+                        <td>
+                            <form method="post" action="{{ path('quince_offers_logos_delete') }}">
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_offers_logos_delete') }}">
+                                <input type="hidden" name="domain" value="{{ logo.domain }}">
+                                <button type="submit" class="qc-icon-btn qc-danger"
+                                        aria-label="{{ 'Remove the partner'|trans }}">
+                                    {{ icons.icon('trash', 14) }}
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">
+                            <div class="qc-empty">
+                                {{ 'No partner yet. Quotes carry the shop name until you add one.'|trans }}
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+{% endblock %}

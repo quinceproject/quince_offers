@@ -1,0 +1,70 @@
+services:
+  _defaults:
+    public: true
+
+    # Te trzy linie są obowiązkowe w każdym naszym module.
+    #
+    # PrestaShop wyszukuje kontrolery modułów wyrażeniem regularnym po treści pliku
+    # (`class X extends FrameworkBundleAdminController`) i dopiero wtedy dokłada im
+    # tagi, dzięki którym Symfony podaje kontrolerowi jego lokalizator usług.
+    # Nasze kontrolery dziedziczą po wspólnej klasie silnika, więc ten wzorzec
+    # nie pasuje — deklarujemy to sami zamiast liczyć na wykrycie.
+    autoconfigure: true
+    autowire: true
+    tags: ['controller.service_arguments']
+
+  Quince\Offers\Controller\Admin\OffersController:
+    class: Quince\Offers\Controller\Admin\OffersController
+    arguments:
+      - '@Quince\Offers\Settings\OfferSettings'
+
+  Quince\Offers\Controller\Admin\LogController:
+    class: Quince\Offers\Controller\Admin\LogController
+    arguments:
+      - '@Quince\Offers\Settings\OfferLog'
+      - '@Quince\Offers\Settings\OfferSettings'
+
+  Quince\Offers\Settings\OfferSettings:
+    class: Quince\Offers\Settings\OfferSettings
+
+  Quince\Offers\Controller\Admin\LogosController:
+    class: Quince\Offers\Controller\Admin\LogosController
+    arguments:
+      - '@Quince\Offers\Settings\PartnerLogos'
+
+  Quince\Offers\Settings\OfferLog:
+    class: Quince\Offers\Settings\OfferLog
+
+  Quince\Offers\Settings\PartnerLogos:
+    class: Quince\Offers\Settings\PartnerLogos
+
+  Quince\Offers\Settings\OfferStore:
+    class: Quince\Offers\Settings\OfferStore
+
+  Quince\Offers\Service\OfferNumber:
+    class: Quince\Offers\Service\OfferNumber
+    arguments:
+      - '@Quince\Offers\Settings\OfferSettings'
+
+  Quince\Offers\Service\OfferReader:
+    class: Quince\Offers\Service\OfferReader
+
+  # Zasób Admin API rdzeń wczytuje sam z `src/ApiPlatform/Resources`, ale
+  # dostawcę trzeba zarejestrować jak każdą inną usługę (ten sam wzorzec co
+  # w quince_withdrawal/quince_contacts).
+  Quince\Offers\ApiPlatform\Provider\OfferProvider:
+    class: Quince\Offers\ApiPlatform\Provider\OfferProvider
+    arguments:
+      - '@Quince\Offers\Service\OfferReader'
+      - '@request_stack'
+    tags: ['api_platform.state_provider']
+
+  Quince\Offers\ApiPlatform\Provider\OfferPdfProvider:
+    class: Quince\Offers\ApiPlatform\Provider\OfferPdfProvider
+    arguments:
+      - '@Quince\Offers\Service\OfferReader'
+      - '@request_stack'
+    tags: ['api_platform.state_provider']
+
+  Quince\Offers\ApiPlatform\Action\OfferPdfAction:
+    class: Quince\Offers\ApiPlatform\Action\OfferPdfAction
