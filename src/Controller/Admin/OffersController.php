@@ -87,7 +87,7 @@ class OffersController extends OffersBaseController
 
         $lista = [[
             'id' => 0,
-            'label' => (string) \Configuration::get('PS_SHOP_NAME') . ' — ' . (string) \Configuration::get('PS_SHOP_EMAIL'),
+            'label' => (string) \Configuration::get('PS_SHOP_NAME') . ' (' . (string) \Configuration::get('PS_SHOP_EMAIL') . ')',
         ]];
 
 
@@ -98,7 +98,7 @@ class OffersController extends OffersBaseController
 
             $lista[] = [
                 'id' => (int) $kontakt['id_contact'],
-                'label' => (string) $kontakt['name'] . ' — ' . (string) $kontakt['email'],
+                'label' => (string) $kontakt['name'] . ' (' . (string) $kontakt['email'] . ')',
             ];
         }
 

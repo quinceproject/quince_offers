@@ -109,7 +109,7 @@
       <a class="q-btn q-btn--secondary" data-q-offer-download hidden href="#" download>
         {l s='Download the PDF' d='Modules.Quinceoffers.Shop'}
       </a>
-      <p class="q-offer__done-text">{l s='Keep the number — quote it when you get back to us.' d='Modules.Quinceoffers.Shop'}</p>
+      <p class="q-offer__done-text">{l s='Keep the number and quote it when you get back to us.' d='Modules.Quinceoffers.Shop'}</p>
     </div>
   </div>
 

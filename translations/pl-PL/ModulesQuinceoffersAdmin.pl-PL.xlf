@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en-US" target-language="pl-PL" datatype="plaintext" original="ModulesQuinceoffersAdmin">
+    <body>
+
+      <trans-unit id="quince.offers.name">
+        <source>Quince offers</source>
+        <target>Quince: oferty</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.desc">
+        <source>Sends a PDF quote for the products a customer picks, with its own number and a copy kept in the shop.</source>
+        <target>Wysyła ofertę w PDF na produkty wybrane przez klienta, z własnym numerem i kopią zapisaną w sklepie.</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.uninstall">
+        <source>Uninstall the module? The quote log, the numbering and the generated PDF files will be removed.</source>
+        <target>Odinstalować moduł? Rejestr ofert, numeracja i wygenerowane pliki PDF zostaną usunięte.</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.label">
+        <source>Offers</source>
+        <target>Oferty</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.saved">
+        <source>Settings saved.</source>
+        <target>Ustawienia zapisane.</target>
+      </trans-unit>
+
+      <trans-unit id="quince.offers.log.issued-total">
+        <source>Quotes issued</source>
+        <target>Wystawione oferty</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.this-month">
+        <source>This month</source>
+        <target>W tym miesiącu</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.net-month">
+        <source>Net value this month</source>
+        <target>Wartość netto w tym miesiącu</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.search">
+        <source>Quote or customer</source>
+        <target>Oferta lub klient</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.search-placeholder">
+        <source>Number, email or company</source>
+        <target>Numer, e-mail lub firma</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.from">
+        <source>From</source>
+        <target>Od</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.to">
+        <source>To</source>
+        <target>Do</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.filter">
+        <source>Filter</source>
+        <target>Filtruj</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.clear">
+        <source>Clear</source>
+        <target>Wyczyść</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.number">
+        <source>Number</source>
+        <target>Numer</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.issued">
+        <source>Issued</source>
+        <target>Data wystawienia</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.customer">
+        <source>Customer</source>
+        <target>Klient</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.items">
+        <source>Items</source>
+        <target>Pozycje</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.net">
+        <source>Net</source>
+        <target>Netto</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.shop">
+        <source>Shop</source>
+        <target>Sklep</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.file">
+        <source>File</source>
+        <target>Plik</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.signed-in">
+        <source>signed in customer</source>
+        <target>zalogowany klient</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.guest">
+        <source>guest</source>
+        <target>gość</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.pdf">
+        <source>PDF</source>
+        <target>PDF</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.build">
+        <source>Build</source>
+        <target>Wygeneruj</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.show-items">
+        <source>Show the items</source>
+        <target>Pokaż pozycje</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.product">
+        <source>Product</source>
+        <target>Produkt</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.reference">
+        <source>Reference</source>
+        <target>Indeks</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.quantity">
+        <source>Quantity</source>
+        <target>Ilość</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.gross">
+        <source>Gross</source>
+        <target>Brutto</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.vat">
+        <source>VAT</source>
+        <target>VAT</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.valid-until">
+        <source>Valid until</source>
+        <target>Ważna do</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.ip">
+        <source>IP</source>
+        <target>IP</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.newsletter">
+        <source>signed up for the newsletter</source>
+        <target>zapisany do newslettera</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.no-match">
+        <source>No quote matches the filter.</source>
+        <target>Żadna oferta nie pasuje do filtra.</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.empty">
+        <source>No quote has been issued yet. The first one appears here the moment a customer asks for it.</source>
+        <target>Nie wystawiono jeszcze żadnej oferty. Pierwsza pojawi się tutaj, gdy tylko klient o nią poprosi.</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.pagination">
+        <source>Page %page% of %pages%, %total% quotes</source>
+        <target>Strona %page% z %pages%, łącznie ofert: %total%</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.log.total">
+        <source>%total% quotes</source>
+        <target>Łącznie ofert: %total%</target>
+      </trans-unit>
+
+      <trans-unit id="quince.offers.logos.intro">
+        <source>A quote for a partner carries their logo. The shop picks it by the domain of the email address the customer types in, so nobody has to choose anything when sending.</source>
+        <target>Oferta dla partnera ma jego logo. Sklep dobiera je po domenie adresu e-mail, który wpisuje klient, więc przy wysyłce nikt nie musi niczego wybierać.</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.logos.add-title">
+        <source>Add a partner</source>
+        <target>Dodaj partnera</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.logos.add-desc">
+        <source>The domain without www, for example partner.com. Every address at that domain gets this logo on the quote.</source>
+        <target>Domena bez www, na przykład partner.com. Każdy adres w tej domenie dostanie to logo na ofercie.</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.logos.domain">
+        <source>Domain</source>
+        <target>Domena</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.logos.logo">
+        <source>Logo</source>
+        <target>Logo</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.logos.no-file">
+        <source>No file chosen</source>
+        <target>Nie wybrano pliku</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.logos.formats">
+        <source>JPG, PNG or WEBP, up to 1 MB.</source>
+        <target>JPG, PNG lub WEBP, do 1 MB.</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.logos.choose-file">
+        <source>Choose a file</source>
+        <target>Wybierz plik</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.logos.add">
+        <source>Add the partner</source>
+        <target>Dodaj partnera</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.logos.file-missing">
+        <source>file missing</source>
+        <target>brak pliku</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.logos.remove">
+        <source>Remove the partner</source>
+        <target>Usuń partnera</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.logos.empty">
+        <source>No partner yet. Quotes carry the shop name until you add one.</source>
+        <target>Nie ma jeszcze żadnego partnera. Dopóki go nie dodasz, oferty mają nazwę sklepu.</target>
+      </trans-unit>
+
+      <trans-unit id="quince.offers.settings.save">
+        <source>Save changes</source>
+        <target>Zapisz zmiany</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.settings.numbering">
+        <source>Numbering and validity</source>
+        <target>Numeracja i ważność</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.settings.numbering-desc">
+        <source>Every shop counts its quotes on its own and starts from one each month. The number goes on the PDF and into the email.</source>
+        <target>Każdy sklep numeruje swoje oferty osobno i co miesiąc zaczyna od jedynki. Numer trafia do pliku PDF i do wiadomości e-mail.</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.settings.prefix">
+        <source>Number prefix</source>
+        <target>Przedrostek numeru</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.settings.prefix-hint">
+        <source>The first part of the number, before the year and the month, for example OF/2026/09/0001.</source>
+        <target>Pierwsza część numeru, przed rokiem i miesiącem, na przykład OF/2026/09/0001.</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.settings.validity">
+        <source>Valid for</source>
+        <target>Ważność oferty</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.settings.validity-hint">
+        <source>Days counted from the day the quote is issued. The date goes on the PDF and into the email.</source>
+        <target>Liczba dni od dnia wystawienia oferty. Data ważności trafia do pliku PDF i do wiadomości e-mail.</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.settings.reply">
+        <source>Answers go to</source>
+        <target>Odpowiedzi trafiają do</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.settings.reply-hint">
+        <source>Where the reply from the customer lands. The quote itself always goes out from the shop address, the one the outgoing mail is set up for; another sender address would end up in spam. The list holds the shop address and the contacts from Shop → Contacts.</source>
+        <target>Dokąd trafi odpowiedź klienta. Sama oferta zawsze wychodzi z adresu sklepu, tego, dla którego skonfigurowana jest poczta wychodząca; inny adres nadawcy trafiłby do spamu. Lista zawiera adres sklepu i kontakty z zakładki Sklep → Kontakty.</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.settings.reply-none">
+        <source>Nobody, the customer only</source>
+        <target>Nikt, tylko klient</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.settings.selected">
+        <source>selected</source>
+        <target>z listy</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.settings.bcc">
+        <source>Send a copy to</source>
+        <target>Wyślij kopię do</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.settings.bcc-hint">
+        <source>Who gets a hidden copy of every quote. The list holds the contacts from Shop → Contacts; an address added there shows up here on its own.</source>
+        <target>Kto dostaje ukrytą kopię każdej oferty. Lista zawiera kontakty z zakładki Sklep → Kontakty; adres dodany tam sam pojawi się tutaj.</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.settings.texts">
+        <source>Texts the customer reads</source>
+        <target>Teksty, które czyta klient</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.settings.texts-desc">
+        <source>Each text has its own wording per language, so a shop selling in two languages does not send one of them the sentence written for the other.</source>
+        <target>Każdy tekst ma osobne brzmienie dla każdego języka, więc sklep sprzedający w dwóch językach nie wyśle klientom jednego z nich zdania napisanego dla drugiego.</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.settings.subject">
+        <source>Email subject</source>
+        <target>Temat wiadomości e-mail</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.settings.subject-hint">
+        <source>What the customer sees in the inbox before opening anything. You can put {offer_number}, {shop_name}, {valid_until} and {customer_name} in it; leave it empty to send the shop name and the number.</source>
+        <target>To, co klient widzi w skrzynce, zanim cokolwiek otworzy. Możesz w nim użyć {offer_number}, {shop_name}, {valid_until} i {customer_name}; zostaw puste, a temat będzie zawierał nazwę sklepu i numer.</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.settings.body">
+        <source>Email message</source>
+        <target>Treść wiadomości e-mail</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.settings.body-hint">
+        <source>The sentence in the email the quote is attached to.</source>
+        <target>Zdanie w wiadomości e-mail, do której dołączona jest oferta.</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.settings.pdf-header">
+        <source>PDF heading</source>
+        <target>Nagłówek PDF</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.settings.pdf-header-hint">
+        <source>Stands at the top of the first page, next to the number.</source>
+        <target>Stoi na górze pierwszej strony, obok numeru.</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.settings.pdf-footer">
+        <source>PDF footer</source>
+        <target>Stopka PDF</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.settings.pdf-footer-hint">
+        <source>One line at the bottom of every page.</source>
+        <target>Jedna linia na dole każdej strony.</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.settings.note">
+        <source>Legal note</source>
+        <target>Nota prawna</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.settings.note-hint">
+        <source>The paragraph saying what the quote is and is not, printed under the prices.</source>
+        <target>Akapit wyjaśniający, czym oferta jest, a czym nie jest, drukowany pod cenami.</target>
+      </trans-unit>
+
+      <trans-unit id="quince.offers.msg.file-gone">
+        <source>The file is gone. Build it again.</source>
+        <target>Pliku już nie ma. Wygeneruj go ponownie.</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.msg.csrf">
+        <source>Invalid security token, please try again.</source>
+        <target>Nieprawidłowy token bezpieczeństwa, spróbuj ponownie.</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.msg.build-failed">
+        <source>The file could not be built.</source>
+        <target>Nie udało się wygenerować pliku.</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.msg.build-ok">
+        <source>The file is ready.</source>
+        <target>Plik jest gotowy.</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.msg.logo-saved">
+        <source>Partner logo saved.</source>
+        <target>Logo partnera zapisane.</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.msg.logo-failed">
+        <source>The logo could not be saved. Check the domain and the file: JPG, PNG or WEBP, up to 1 MB.</source>
+        <target>Nie udało się zapisać logo. Sprawdź domenę i plik: JPG, PNG lub WEBP, do 1 MB.</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.msg.logo-removed">
+        <source>Partner logo removed.</source>
+        <target>Logo partnera usunięte.</target>
+      </trans-unit>
+
+    </body>
+  </file>
+</xliff>

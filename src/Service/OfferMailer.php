@@ -103,7 +103,7 @@ final class OfferMailer
         $wzor = $this->settings->text('EMAIL_SUBJECT', (int) $oferta['id_lang']);
 
         if (trim($wzor) === '') {
-            return $nazwaSklepu . ' — ' . $oferta['number'];
+            return $nazwaSklepu . ': ' . $oferta['number'];
         }
 
         return strtr($wzor, $zmienne);

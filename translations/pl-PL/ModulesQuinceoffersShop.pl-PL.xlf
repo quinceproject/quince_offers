@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en-US" target-language="pl-PL" datatype="plaintext" original="ModulesQuinceoffersShop">
+    <body>
+
+      <trans-unit id="quince.offers.shop.remove">
+        <source>Remove from the quote list</source>
+        <target>Usuń z listy ofertowej</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.shop.msg-email">
+        <source>Enter your email address.</source>
+        <target>Podaj adres e-mail.</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.shop.msg-sent">
+        <source>The quote has been sent. Its number is</source>
+        <target>Oferta została wysłana. Jej numer to</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.shop.msg-failure">
+        <source>The quote could not be sent. Please try again in a moment.</source>
+        <target>Nie udało się wysłać oferty. Spróbuj ponownie za chwilę.</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.shop.trigger">
+        <source>Download a quote</source>
+        <target>Pobierz ofertę</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.shop.heading">
+        <source>Ask for a PDF quote</source>
+        <target>Poproś o ofertę w PDF</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.shop.lead">
+        <source>Leave your email address and we will send you a detailed quote in PDF, with net prices, delivery time and warranty terms.</source>
+        <target>Zostaw adres e-mail, a wyślemy Ci szczegółową ofertę w PDF, z cenami netto, czasem dostawy i warunkami gwarancji.</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.shop.list">
+        <source>Quote list</source>
+        <target>Lista ofertowa</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.shop.email">
+        <source>Your email address</source>
+        <target>Twój adres e-mail</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.shop.name">
+        <source>Name or company</source>
+        <target>Imię i nazwisko lub firma</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.shop.phone">
+        <source>Phone (optional)</source>
+        <target>Telefon (opcjonalnie)</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.shop.newsletter">
+        <source>Sign me up for the newsletter</source>
+        <target>Zapisz mnie do newslettera</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.shop.done-title">
+        <source>The quote is on its way</source>
+        <target>Oferta jest już w drodze</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.shop.done-sent-to">
+        <source>We have sent it to</source>
+        <target>Wysłaliśmy ją na adres</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.shop.download">
+        <source>Download the PDF</source>
+        <target>Pobierz PDF</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.shop.keep-number">
+        <source>Keep the number and quote it when you get back to us.</source>
+        <target>Zachowaj ten numer i podaj go, gdy będziesz się z nami kontaktować.</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.shop.send">
+        <source>Send the quote</source>
+        <target>Wyślij ofertę</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.shop.add">
+        <source>Add to the quote list</source>
+        <target>Dodaj do listy ofertowej</target>
+      </trans-unit>
+
+    </body>
+  </file>
+</xliff>
