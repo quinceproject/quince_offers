@@ -4,6 +4,13 @@ All notable changes to this module are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the versioning follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.1] - 2026-11-10
+
+### Fixed
+
+- The "Send a copy to" field reads "Nobody, the customer only" instead of using a
+  long dash.
+
 ## [0.4.0] - 2026-11-10
 
 First public release.

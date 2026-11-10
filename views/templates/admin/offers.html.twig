@@ -77,7 +77,7 @@
                 otwarte: false,
                 wybrane: {{ settings.COPY_CONTACTS ? '[' ~ settings.COPY_CONTACTS ~ ']' : '[]' }}.map(String),
                 podpis() {
-                    if (!this.wybrane.length) { return '{{ 'Nobody — the customer only'|trans }}'; }
+                    if (!this.wybrane.length) { return '{{ 'Nobody, the customer only'|trans }}'; }
                     return this.wybrane.length + ' {{ 'selected'|trans }}';
                 }
             }">
