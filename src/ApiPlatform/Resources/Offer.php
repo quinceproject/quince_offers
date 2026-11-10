@@ -36,7 +36,7 @@ use Quince\Offers\ApiPlatform\Provider\OfferProvider;
                 'summary' => 'Quotes issued since a given one',
                 'description' => 'Filter with `sinceId` and `shopId`. Page with `page` and `limit` (50 by '
                     . 'default, 200 at most), ordered oldest-first. Take the `id` of the last item on the page '
-                    . 'as `sinceId` for the next call — the filter is strict (`>`), so that item never repeats.',
+                    . 'as `sinceId` for the next call. The filter is strict (`>`), so that item never repeats.',
             ],
         ),
         new Get(
@@ -54,7 +54,7 @@ use Quince\Offers\ApiPlatform\Provider\OfferProvider;
             openapiContext: [
                 'summary' => 'The quote PDF file',
                 'description' => 'Binary `application/pdf`, not JSON. Unlike the link in the shop (`pdfUrl`), '
-                    . 'this endpoint does not require a front-office session matching the quote\'s customer — '
+                    . 'this endpoint does not require a front-office session matching the quote\'s customer: '
                     . 'OAuth2 is the only check. `404` when the quote has no file yet, or belongs to another shop.',
             ],
         ),

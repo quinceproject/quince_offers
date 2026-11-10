@@ -4,6 +4,13 @@ All notable changes to this module are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the versioning follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.3] - 2026-11-10
+
+### Changed
+
+- Admin API descriptions no longer use long dashes.
+- An empty value in the quote PDF shows a hyphen instead of a long dash.
+
 ## [0.4.2] - 2026-11-10
 
 ### Added

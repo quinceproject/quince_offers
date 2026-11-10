@@ -559,7 +559,7 @@ final class PdfGenerator
             $wplyw = (float) $wariant['impact'];
             $opisWplywu = $wplyw > 0
                 ? '+' . $this->money($wplyw, $oferta)
-                : ($wplyw < 0 ? $this->money($wplyw, $oferta) : '—');
+                : ($wplyw < 0 ? $this->money($wplyw, $oferta) : '-');
 
             $wiersze .= '<tr>'
                 . '<td>' . $this->e((string) $wariant['name']) . '</td>'
