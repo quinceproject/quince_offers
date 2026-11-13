@@ -1,10 +1,9 @@
 {**
- * Quince Offers — przycisk i szuflada oferty na karcie produktu.
+ * Quince Offers: przycisk i szuflada oferty na karcie produktu.
  *
  * Układ i nazwy klas są z makiety `strona-produktu-alt.html`: przycisk cichy
  * obok „Zapytaj specjalistę", a pod nim szuflada z listą ofertową, trzema polami
- * i dwoma przyciskami. Pola przepisane na pływające etykiety, bo tak wyglądają
- * dziś wszystkie pola motywu.
+ * i dwoma przyciskami. Pola mają pływające etykiety, jak wszystkie pola motywu.
  *
  * Styl należy do motywu (`components/offer.css`), zachowanie do wyspy
  * (`islands/offer.js`). Tutaj jest sama treść.
@@ -44,9 +43,8 @@
     <h3 class="q-drawer__heading">{l s='Ask for a PDF quote' d='Modules.Quinceoffers.Shop'}</h3>
     <p class="q-drawer__lead">{l s='Leave your email address and we will send you a detailed quote in PDF, with net prices, delivery time and warranty terms.' d='Modules.Quinceoffers.Shop'}</p>
 
-    {* Lista ofertowa. Nie jest ozdobą: to ona jest powodem, dla którego niżej
-       stoi drugi przycisk. Klient zbiera produkty z kilku kart i dostaje jedną
-       ofertę na wszystkie, zamiast trzech osobnych wiadomości. *}
+    {* Lista ofertowa, którą zasila drugi przycisk w stopce. Klient zbiera
+       produkty z kilku kart i dostaje jedną ofertę na wszystkie. *}
     <div class="q-offer" data-q-offer-box hidden>
       <div class="q-offer__head">
         {l s='Quote list' d='Modules.Quinceoffers.Shop'} (<span data-q-offer-count>0</span>)
@@ -89,9 +87,8 @@
     </div>
 
     {* Po wysłaniu formularz znika, a na jego miejscu zostaje potwierdzenie
-       z numerem. Numer jest jedyną rzeczą, po której klient może się do nas
-       odwołać — dlatego stoi osobno, a nie w środku zdania. Tu też stanie
-       przycisk „Pobierz PDF", gdy dojdzie generator. *}
+       z numerem. Numer stoi osobno, a nie w środku zdania, bo po nim klient
+       odwołuje się do oferty. *}
     <div class="q-offer__done" data-q-offer-done hidden>
       <svg class="q-offer__done-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>

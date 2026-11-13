@@ -1,4 +1,4 @@
-{# Dziennik ofert — co, komu i kiedy wysłaliśmy.
+{# Dziennik ofert: co, komu i kiedy wysłaliśmy.
    Ten sam layout i te same komponenty co reszta panelu Quince. #}
 {% extends '@Modules/quince_engine/views/templates/admin/layout.html.twig' %}
 {% import '@Modules/quince_engine/views/templates/admin/_macros/icons.html.twig' as icons %}
@@ -9,7 +9,7 @@
     {# Makro nie dziedziczy importów szablonu, więc ikony bierze u siebie. #}
     {% import '@Modules/quince_engine/views/templates/admin/_macros/icons.html.twig' as icons %}
 
-    {# Kliknięcie w tę samą kolumnę odwraca porządek, w inną — zaczyna od malejącego:
+    {# Kliknięcie w tę samą kolumnę odwraca porządek, w inną zaczyna od malejącego:
        przy dacie i kwocie szuka się najpierw tego, co najnowsze i największe. #}
     {% set nowyKierunek = (sort == klucz and dir == 'DESC') ? 'ASC' : 'DESC' %}
     <th class="qc-sortable">

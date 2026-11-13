@@ -37,9 +37,8 @@ final class OfferSettings
     private const PLAIN = [
         'PREFIX' => 'OF',
         'VALIDITY_DAYS' => '30',
-        // Kopie: identyfikatory kontaktow sklepu po przecinku. Adresy wpisywane
-        // recznie odpadaja, bo kazdy z nich i tak musi gdzies zyc — a zyje
-        // w Sklep -> Kontakty, razem z nazwiskiem i przypisaniem.
+        // Kopie: identyfikatory kontaktow sklepu (Sklep -> Kontakty) po przecinku,
+        // nie adresy wpisywane recznie.
         'COPY_CONTACTS' => '',
         // Adres zwrotny: 0 znaczy „ten, z którego wysyłamy", a inna wartość to
         // identyfikator kontaktu sklepu. Nadawcą jest zawsze adres sklepu, bo

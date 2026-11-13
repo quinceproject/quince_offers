@@ -20,9 +20,8 @@ use Symfony\Component\HttpFoundation\Response;
  * Logotypy partnerów.
  *
  * Ekran robi trzy rzeczy: pokazuje listę, przyjmuje nowy plik i kasuje wpis.
- * Zapis jest natychmiastowy, bez wspólnego przycisku „zapisz" — plik i tak
- * wgrywa się osobnym żądaniem, a wtedy przycisk zbiorczy mówiłby nieprawdę
- * o tym, co jeszcze czeka na zapisanie.
+ * Zapis jest natychmiastowy, bez wspólnego przycisku „zapisz": plik i tak
+ * wgrywa się osobnym żądaniem.
  */
 class LogosController extends OffersBaseController
 {

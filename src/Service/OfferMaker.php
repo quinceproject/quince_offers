@@ -24,9 +24,9 @@ use Tools;
  * Wystawienie oferty.
  *
  * Numer nadaje sklep, ceny zapisujemy w chwili wystawienia. Oferta ma być
- * wiążąca w dniu, w którym powstała, a cena w katalogu zmienia się bez pytania
- * — policzona ponownie przy odczycie znaczyłaby, że dokument mówi co innego
- * niż plik, który klient dostał mailem.
+ * wiążąca w dniu, w którym powstała, a cena w katalogu się zmienia. Policzona
+ * ponownie przy odczycie znaczyłaby, że dokument mówi co innego niż plik,
+ * który klient dostał mailem.
  *
  * Oferta gościa NIE trafia na żadne konto, nawet gdy podany adres pasuje do
  * istniejącego klienta. Dopisanie po adresie wystawiłoby cudze ceny każdemu,
@@ -135,11 +135,10 @@ final class OfferMaker
                 continue;
             }
 
-            // Cena „jak w sklepie" — `getPriceStatic` domyślnie liczy z aktywną
-            // promocją (`$usereduc` domyślnie `true`), więc bez zmian daje już
-            // cenę po rabacie. Osobno dociągamy cenę regularną (`usereduc:
-            // false`), żeby oferta i PDF mogły pokazać obie — bez promocji obie
-            // wychodzą równe.
+            // Cena „jak w sklepie": `getPriceStatic` domyślnie liczy z aktywną
+            // promocją (`$usereduc` domyślnie `true`), więc daje już cenę po
+            // rabacie. Osobno dociągamy cenę regularną (`usereduc: false`),
+            // żeby oferta i PDF mogły pokazać obie. Bez promocji są równe.
             $netto = (float) Product::getPriceStatic((int) $produkt->id, usetax: false);
             $brutto = (float) Product::getPriceStatic((int) $produkt->id, usetax: true);
             $regularnaNetto = (float) Product::getPriceStatic((int) $produkt->id, usetax: false, usereduc: false);
@@ -159,10 +158,9 @@ final class OfferMaker
                 // reguła zależy od kraju kupującego, a te dwie ceny już to
                 // uwzględniają, bo pochodzą z tego samego wyliczenia.
                 'tax_rate' => $netto > 0 ? round(($brutto / $netto - 1) * 100, 3) : 0.0,
-                // Kwota netto promocji — różnica dwóch cen powyżej, nie osobne
-                // wyliczenie. Zero, gdy produkt nie ma dziś promocji. CEP tego
-                // pola nie potrzebuje (liczy rabat sam, §17.2), ale koszt
-                // policzenia go poprawnie jest nulowy, więc nie zostaje fikcyjne.
+                // Kwota netto promocji: różnica dwóch cen powyżej, nie osobne
+                // wyliczenie. Zero, gdy produkt nie ma dziś promocji. CEP liczy
+                // rabat sam z dwóch cen, to pole jest pomocnicze.
                 'discount' => round($regularnaNetto - $netto, 6),
             ];
         }

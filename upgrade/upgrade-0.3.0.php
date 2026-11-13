@@ -14,7 +14,7 @@ if (!defined('_PS_VERSION_')) {
 }
 
 /**
- * 0.3.0 — cena regularna obok ceny z wyceny na pozycji oferty.
+ * 0.3.0: cena regularna obok ceny z wyceny na pozycji oferty.
  *
  * Sprawdzane po nazwie kolumny, nie dodawane na ślepo: `ALTER TABLE ADD
  * COLUMN` na kolumnie, która już jest, wywraca się błędem (ten sam wzorzec
@@ -47,9 +47,9 @@ function upgrade_module_0_3_0($module): bool
         }
     }
 
-    // Pozycje zapisane wcześniej nie mają ceny regularnej — bez promocji
-    // w tamtym dniu równa się dzisiejszej `price_net`/`price_gross`, więc to
-    // bezpieczne wypełnienie, nie zgadywanie.
+    // Pozycje zapisane wcześniej nie mają ceny regularnej. Wypełniamy ją
+    // ceną z pozycji (`price_net`/`price_gross`), która bez promocji w dniu
+    // wystawienia jest tą samą kwotą.
     return $db->execute(
         'UPDATE `' . $table . '` SET `price_regular_net` = `price_net`, `price_regular_gross` = `price_gross`'
         . ' WHERE `price_regular_net` = 0 AND `price_regular_gross` = 0'

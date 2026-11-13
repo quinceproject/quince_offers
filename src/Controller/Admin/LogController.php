@@ -70,9 +70,9 @@ class LogController extends OffersBaseController
     /**
      * Pobranie pliku z panelu.
      *
-     * Osobna droga niż ta dla klienta: sprzedawcę wpuszcza panel, więc nie ma
-     * po co przepuszczać go przez klucz oferty. Klucz zresztą by nie wystarczył
-     * — oferta wystawiona zalogowanemu klientowi wpuszcza tylko jego.
+     * Osobna droga niż ta dla klienta: sprzedawcę wpuszcza panel. Klucz oferty
+     * by nie wystarczył, bo oferta wystawiona zalogowanemu klientowi wpuszcza
+     * tylko jego.
      */
     public function fileAction(Request $request): Response
     {
@@ -99,7 +99,7 @@ class LogController extends OffersBaseController
      * Złożenie pliku dla oferty, która go nie ma.
      *
      * Dotyczy ofert sprzed generatora i tych, przy których składanie się nie
-     * udało. Ceny i pozycje bierzemy z zapisanego wiersza, nie z katalogu —
+     * udało. Ceny i pozycje bierzemy z zapisanego wiersza, nie z katalogu:
      * dokument ma odtworzyć ofertę z dnia wystawienia, a nie dzisiejszy cennik.
      */
     public function buildAction(Request $request): RedirectResponse

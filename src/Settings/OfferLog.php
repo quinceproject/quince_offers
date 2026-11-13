@@ -125,11 +125,11 @@ final class OfferLog
     }
 
     /**
-     * Ile ofert i na jaką kwotę — nagłówek ekranu.
+     * Ile ofert i na jaką kwotę: nagłówek ekranu.
      *
      * Kwota policzona OSOBNO DLA KAŻDEJ WALUTY. Sklep wielowalutowy wystawia
      * oferty w kilku walutach, a dodanie ich do siebie dałoby liczbę, która nie
-     * znaczy nic — i wyglądałaby na kwotę w walucie domyślnej.
+     * znaczy nic, a wyglądałaby na kwotę w walucie domyślnej.
      *
      * @return array{total:int,month:int,sums:array<int,array{currency:string,sum:float}>}
      */

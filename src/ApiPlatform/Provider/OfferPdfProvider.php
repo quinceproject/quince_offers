@@ -18,15 +18,15 @@ use Quince\Offers\Settings\OfferStore;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * Plik oferty, do odpytywania Admin API — bez sprawdzania sesji front-office.
+ * Plik oferty dla Admin API, bez sprawdzania sesji front-office.
  *
  * `controllers/front/pdf.php` broni oferty klienta zalogowanego wymogiem,
- * żeby pobierał ją TEN SAM zalogowany klient — słuszne dla przeglądarki, ale
- * niewykonalne dla CEP, który czyta przez OAuth2, nie przez sesję klienta
+ * żeby pobierał ją TEN SAM zalogowany klient. To niewykonalne dla CEP,
+ * który czyta przez OAuth2, nie przez sesję klienta.
  * Ten zasób broni się inaczej: scope `quince_offers_read`
  * i filtr po `id_shop`, tak jak reszta modułu.
  *
- * Zwraca gołą tablicę ze ścieżką i nazwą pliku, nie zasób `Offer` — ten
+ * Zwraca gołą tablicę ze ścieżką i nazwą pliku, nie zasób `Offer`. Ten
  * jeden wiersz czyta `OfferPdfAction`, a nie serializer, więc kształt nie
  * musi zgadzać się z resztą API Platform.
  *

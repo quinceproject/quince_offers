@@ -16,10 +16,8 @@ use Context;
 /**
  * Lista ofertowa, czyli koszyk na wycenę.
  *
- * Klient zbiera produkty z kilku kart i dostaje JEDNĄ ofertę na wszystkie,
- * zamiast trzech osobnych wiadomości. Lista żyje w ciasteczku sklepu, więc
- * działa też dla gościa — a gość jest tu regułą, nie wyjątkiem: po ofertę
- * przychodzi zwykle ktoś, kto konta jeszcze nie ma.
+ * Klient zbiera produkty z kilku kart i dostaje JEDNĄ ofertę na wszystkie.
+ * Lista żyje w ciasteczku sklepu, więc działa też dla gościa.
  *
  * Trzymamy same identyfikatory produktów. Nazwa, zdjęcie i cena i tak muszą
  * pochodzić z katalogu w chwili pokazania listy, bo cena zmienia się bez

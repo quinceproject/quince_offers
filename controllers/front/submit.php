@@ -26,7 +26,7 @@ use Quince\Offers\Settings\OfferStore;
  *
  * Formularza nie sprawdzamy tutaj poza tym, co dotyczy samej oferty. Znacznik
  * strony, pułapkę, czas wypełnienia i limit powtórzeń bierze na siebie strażnik
- * silnika — odpala się na `actionFrontControllerInitAfter` dla każdego żądania
+ * silnika. Odpala się na `actionFrontControllerInitAfter` dla każdego żądania
  * niosącego jego pola i przerywa zanim ten kod się zacznie.
  */
 class Quince_OffersSubmitModuleFrontController extends ModuleFrontController
@@ -115,7 +115,7 @@ class Quince_OffersSubmitModuleFrontController extends ModuleFrontController
         }
 
         // Plik składamy przed wysyłką: mail ma iść z załącznikiem, a nie zapowiadać
-        // ofertę, której jeszcze nie ma. Nieudane złożenie nie przerywa zapytania —
+        // ofertę, której jeszcze nie ma. Nieudane złożenie nie przerywa zapytania:
         // klient dostaje wtedy wiadomość bez załącznika, a sklep wpis w dzienniku.
         $plik = (new PdfGenerator($ustawienia))->build($oferta);
 
@@ -156,16 +156,13 @@ class Quince_OffersSubmitModuleFrontController extends ModuleFrontController
      * Zgłoszenie zdarzenia `quote.created` na zewnątrz.
      *
      * Odbiorcę wskazuje sklep w module `quince_events`, w jego ekranie
-     * ustawień — moduł nie zna ani adresu, ani tego, co stoi po drugiej
-     * stronie. To może być CRM, n8n, Windmill albo cokolwiek, co przyjmuje
-     * kopertę i potrafi sprawdzić podpis. Bez ustawionego odbiorcy nie
-     * dzieje się nic i oferta i tak jest wystawiona.
+     * ustawień. Ten moduł nie zna adresu odbiorcy. Bez ustawionego odbiorcy
+     * nie dzieje się nic, a oferta i tak jest wystawiona.
      *
      * Przesyłka niesie tyle, żeby dało się odtworzyć ofertę bez zaglądania do
      * sklepu: numer, daty, waluta, kupujący, pozycje z cenami i adres pliku.
-     * Plik idzie odnośnikiem z kluczem, a nie treścią — kopertę czyta się
-     * w logach systemu po drugiej stronie i megabajt załącznika w niej nie ma
-     * czego szukać.
+     * Plik idzie odnośnikiem z kluczem, a nie treścią, żeby koperta nie
+     * zawierała megabajtów załącznika.
      *
      * @param array<string,mixed> $oferta
      */
@@ -203,7 +200,7 @@ class Quince_OffersSubmitModuleFrontController extends ModuleFrontController
                     'valid_until' => (string) $oferta['valid_until'],
                     'currency' => (string) $waluta->iso_code,
                     'buyer' => [
-                        // Zero znaczy gość. Sklep nie zgaduje, kto to jest —
+                        // Zero znaczy gość. Sklep nie zgaduje, kto to jest:
                         // dopasowaniem leada do kontaktu zajmuje się odbiorca.
                         'id_customer' => (int) $oferta['id_customer'],
                         'email' => (string) $oferta['email'],
@@ -236,16 +233,14 @@ class Quince_OffersSubmitModuleFrontController extends ModuleFrontController
      * Zapis zgody na newsletter do rejestru `quince_cmp`, jeśli moduł jest
      * zainstalowany.
      *
-     * Dotąd checkbox zapisywał się tylko jako goły bit na samej ofercie —
-     * bez wersji klauzuli i bez skrótu jej treści, czyli bez niczego, czym
-     * sklep mógłby się bronić przy sporze. `ConsentLog::record()` sam
-     * dociąga wersję zgody obowiązującą teraz dla kodu `newsletter` i zapisuje
-     * ją razem ze zdarzeniem — ten sam mechanizm, co przy checkoucie.
+     * Na samej ofercie zgoda jest tylko bitem, bez wersji klauzuli i skrótu
+     * jej treści. `ConsentLog::record()` sam dociąga wersję zgody obowiązującą
+     * teraz dla kodu `newsletter` i zapisuje ją razem ze zdarzeniem (ten sam
+     * mechanizm co przy checkoucie).
      *
-     * Zapisujemy zarówno zgodę, jak i jej brak: odmowa jest tu tak samo
-     * dowodem jak przyzwolenie, a każde złożenie wyceny to osobne, świadome
-     * zaznaczenie pola, nie odruchowy resave formularza — duplikaty w logu
-     * nie są błędem.
+     * Zapisujemy zarówno zgodę, jak i jej brak: odmowa jest tak samo dowodem
+     * jak przyzwolenie. Każde złożenie wyceny to osobne zaznaczenie pola, więc
+     * duplikaty w logu nie są błędem.
      *
      * @param array<string,mixed> $oferta
      */

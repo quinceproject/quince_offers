@@ -19,9 +19,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 /**
  * Logotypy partnerów, dobierane po domenie adresu e-mail.
  *
- * Oferta dla stałego partnera wygląda inaczej niż oferta dla kogoś z ulicy:
- * na dokumencie stoi jego znak firmowy. Sklep nie musi nic wybierać przy
- * wysyłce — decyduje domena adresu, który klient sam podał.
+ * Na ofercie dla stałego partnera stoi jego znak firmowy. Decyduje domena
+ * adresu, który klient sam podał.
  *
  * Mapa domen jest osobna dla każdego sklepu: ten sam partner bywa obsługiwany
  * przez jedną spółkę z grupy, a nie przez wszystkie.
@@ -242,8 +241,8 @@ final class PartnerLogos
     /**
      * Zapis mapy do każdego sklepu z bieżącego kontekstu.
      *
-     * `true` przy zapisie znaczy „to jest treść, nie napis do wyświetlenia" —
-     * bez tego PrestaShop zamienia cudzysłowy w JSON-ie na encje i mapa wraca
+     * `true` przy zapisie znaczy „to jest treść, nie napis do wyświetlenia".
+     * Bez tego PrestaShop zamienia cudzysłowy w JSON-ie na encje i mapa wraca
      * z odczytu jako śmieci.
      *
      * @param array<string,string> $mapa

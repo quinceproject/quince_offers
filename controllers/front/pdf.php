@@ -24,8 +24,8 @@ use Quince\Offers\Settings\OfferStore;
  * do klienta w mailu i w szufladzie.
  *
  * Oferta wystawiona zalogowanemu klientowi wymaga dodatkowo, żeby pobierał ją
- * ten sam klient. Oferty gościa broni sam klucz — konta, do którego można by ją
- * przypisać, po prostu nie ma.
+ * ten sam klient. Oferty gościa broni sam klucz, bo nie ma konta, do którego
+ * można by ją przypisać.
  */
 class Quince_OffersPdfModuleFrontController extends ModuleFrontController
 {

@@ -1,8 +1,7 @@
 # Ekran ofert.
 #
-# `_legacy_controller` wskazuje zakładkę silnika, bo moduł bez niego nie działa —
-# nie zakładamy własnej zakładki tylko po to, żeby PrestaShop miał gdzie sprawdzić
-# uprawnienia.
+# `_legacy_controller` wskazuje zakładkę silnika, bo moduł bez niego nie działa.
+# Uprawnienia PrestaShop sprawdza więc na zakładce silnika.
 quince_offers:
   path: quince/offers
   methods: [GET]
@@ -12,7 +11,7 @@ quince_offers:
     _legacy_link: 'AdminQuince'
 
 # Dziennik ofert. Osobna trasa, bo filtr, strona i sortowanie muszą mieścić się
-# w adresie — inaczej nie da się wrócić do tych samych wyników ani wysłać ich komuś.
+# w adresie. Inaczej nie da się wrócić do tych samych wyników ani wysłać ich komuś.
 quince_offers_log:
   path: quince/offers/log
   methods: [GET]

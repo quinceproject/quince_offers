@@ -19,9 +19,8 @@ use Quince\Offers\Settings\OfferSettings;
 /**
  * Wysyłka oferty do klienta.
  *
- * Plik PDF dochodzi tu jako załącznik w kolejnym kroku; na razie mail niesie
- * numer, datę ważności i zdanie wpisane przez sklep w ustawieniach — to samo,
- * które potem stanie nad załącznikiem.
+ * Mail niesie numer, datę ważności, zdanie wpisane przez sklep w ustawieniach
+ * i plik PDF jako załącznik, jeśli udało się go złożyć.
  *
  * Kopie ukryte idą na adresy z ustawień. Handlowiec ma wiedzieć o zapytaniu
  * w tej samej chwili co klient, bez zaglądania do panelu.
@@ -91,9 +90,8 @@ final class OfferMailer
      * Temat wiadomości.
      *
      * Sklep wpisuje go w ustawieniach, na każdy język osobno, i może wstawić
-     * w nim te same znaczniki co w treści. Puste pole znaczy „ułóż sam" —
-     * nazwa sklepu i numer, bo to dwie rzeczy, po których klient rozpozna
-     * wiadomość na liście w skrzynce.
+     * w nim te same znaczniki co w treści. Puste pole znaczy „ułóż sam":
+     * nazwa sklepu i numer.
      *
      * @param array<string,mixed>  $oferta
      * @param array<string,string> $zmienne
@@ -169,8 +167,8 @@ final class OfferMailer
      * Adres, na który wraca odpowiedź klienta.
      *
      * Sklep wskazuje go w ustawieniach spośród własnych kontaktów. Nadawcą
-     * zostaje adres sklepu — ten, pod który skonfigurowana jest poczta
-     * wychodząca — bo tylko z niego wolno wysyłać. Adres zwrotny takiego
+     * zostaje adres sklepu (ten, pod który skonfigurowana jest poczta
+     * wychodząca), bo tylko z niego wolno wysyłać. Adres zwrotny takiego
      * ograniczenia nie ma, więc handlowiec dostaje odpowiedź do siebie,
      * a wiadomość dalej wychodzi zgodnie z konfiguracją serwera.
      *
@@ -231,7 +229,7 @@ final class OfferMailer
     /**
      * Pozycje jako wiersze tabeli w mailu.
      *
-     * Skład idzie tutaj, a nie w szablonie, bo szablon maila nie ma pętli —
+     * Skład idzie tutaj, a nie w szablonie, bo szablon maila nie ma pętli:
      * PrestaShop podmienia w nim wyłącznie zmienne.
      *
      * @param array<int,array<string,mixed>> $pozycje

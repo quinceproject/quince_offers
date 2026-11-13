@@ -20,8 +20,8 @@ use Quince\Offers\Settings\OfferStore;
  *
  * `OfferMaker` tylko zapisuje; to jedyne miejsce, które czyta ofertę
  * z powrotem. Oferta nigdy się nie aktualizuje po wystawieniu (ceny
- * zamrożone, bez statusu — patrz komentarz przy `OfferStore`), więc kursor
- * po `id_offer` (ostry, rosnąco) wystarcza — nie trzeba `date_upd`.
+ * zamrożone, bez statusu; patrz komentarz przy `OfferStore`), więc kursor
+ * po `id_offer` (ostry, rosnąco) wystarcza i nie trzeba `date_upd`.
  */
 final class OfferReader
 {

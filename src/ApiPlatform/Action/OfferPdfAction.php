@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
  * Oddanie pliku, który znalazł `OfferPdfProvider`.
  *
  * Kontroler niestandardowy: odpowiedź jest plikiem, nie zasobem do
- * serializacji. `data` jest tu zawsze tablicą — `null` (brak pliku albo
+ * serializacji. `data` jest tu zawsze tablicą: `null` (brak pliku albo
  * cudzy sklep) kończy się `404` wcześniej, w `ReadListener`, zanim ten
  * kontroler się odpali.
  */

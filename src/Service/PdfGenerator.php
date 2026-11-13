@@ -23,9 +23,7 @@ use Quince\Offers\Settings\PartnerLogos;
  *
  * Dokument jest arkuszem produktu, a nie fakturą: zdjęcie, opis, specyfikacja
  * i cena mają wystarczyć osobie, która nigdy nie była w sklepie, żeby podjąć
- * decyzję i pokazać ją przełożonemu. Układ przeniesiony z modułu, który to
- * robił wcześniej — sprawdził się w sprzedaży i nie ma powodu wymyślać go
- * od nowa.
+ * decyzję i pokazać ją przełożonemu.
  *
  * Ceny bierzemy z zapisanych pozycji oferty, a treść opisową z katalogu.
  * To nie jest niespójność: cena ma być ta z dnia wystawienia, bo dokument jest
@@ -175,7 +173,7 @@ final class PdfGenerator
     /**
      * Nagłówek: znak firmowy z lewej, numer i daty z prawej.
      *
-     * Przy ofercie dla partnera znakiem jest jego logotyp, przy zwykłej —
+     * Przy ofercie dla partnera znakiem jest jego logotyp, przy zwykłej
      * logotyp sklepu.
      *
      * @param array<string,mixed> $oferta
@@ -240,7 +238,7 @@ final class PdfGenerator
         $regularnaBrutto = (float) ($pozycja['price_regular_gross'] ?? 0) * $ilosc;
 
         // Przekreślona cena regularna pojawia się tylko, gdy faktycznie różni
-        // się od ceny z wyceny — epsilon zamiast `!==`, bo to porównanie liczb
+        // się od ceny z wyceny. Epsilon zamiast `!==`, bo to porównanie liczb
         // zmiennoprzecinkowych po przejściu przez DECIMAL(20,6) w bazie.
         $maRabat = ($regularnaBrutto - $brutto) > 0.000001;
 
@@ -343,8 +341,8 @@ final class PdfGenerator
     /**
      * Zakończenie: zdanie sklepu, jego dane i klauzula.
      *
-     * Dane firmy odpadają przy ofercie dla partnera — dokument idzie wtedy pod
-     * jego znakiem, do jego klienta, i nasza stopka nie ma w nim czego szukać.
+     * Dane firmy odpadają przy ofercie dla partnera: dokument idzie wtedy pod
+     * jego znakiem, do jego klienta.
      *
      * @param array<string,mixed> $oferta
      */

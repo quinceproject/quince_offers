@@ -23,8 +23,8 @@ use Quince\Offers\ApiPlatform\Provider\OfferProvider;
  * Wystawiona oferta (wycena) w Admin API.
  *
  * Tylko do odczytu: oferta nie ma statusu i nie zmienia się po wystawieniu
- * (ceny zamrożone w dniu wystawienia — patrz `OfferStore`), więc nie ma tu
- * żadnego zapisu, w żadną stronę. Dokładnie kształt uzgodniony z CEP.
+ * (ceny zamrożone w dniu wystawienia, patrz `OfferStore`), więc nie ma tu
+ * żadnego zapisu. Kształt jest uzgodniony z CEP.
  */
 #[ApiResource(
     operations: [
@@ -67,7 +67,7 @@ class Offer
 
     public int $shopId = 0;
 
-    /** Język klienta w chwili wyceny — język, w którym ma odpowiadać. */
+    /** Język klienta w chwili wyceny, czyli język, w którym ma odpowiadać. */
     public int $langId = 0;
 
     /** Numer nadany przez sklep. */
@@ -102,14 +102,13 @@ class Offer
     public array $buyer = [];
 
     /**
-     * Każda: `productId`, `productAttributeId` (dziś zawsze `0` — wybór
-     * wariantu nie jest jeszcze możliwy w formularzu wyceny), `reference`,
-     * `name`, `quantity`, `priceNet`/`priceGross` (cena, którą klient dostał
-     * w wycenie — z promocją, jeśli była), `regularPriceNet`/
-     * `regularPriceGross` (cena bez żadnych obniżek, zamrożona jak reszta
-     * pozycji — równa cenie z wyceny, gdy promocji nie było), `taxRate`,
-     * `discount` (różnica netto powyżej — CEP liczy rabat sam z dwóch cen,
-     * to pole jest wygodą, nie wymogiem).
+     * Każda: `productId`, `productAttributeId` (zawsze `0`, bo formularz
+     * wyceny nie pozwala wybrać wariantu), `reference`, `name`, `quantity`,
+     * `priceNet`/`priceGross` (cena, którą klient dostał w wycenie, z promocją,
+     * jeśli była), `regularPriceNet`/`regularPriceGross` (cena bez żadnych
+     * obniżek, zamrożona jak reszta pozycji; równa cenie z wyceny, gdy promocji
+     * nie było), `taxRate`, `discount` (różnica netto powyżej; CEP liczy rabat
+     * sam z dwóch cen, to pole jest pomocnicze).
      *
      * @var array<int,array<string,mixed>>
      */
@@ -139,10 +138,10 @@ class Offer
     public float $totalGross = 0.0;
 
     /**
-     * Odnośnik z kluczem jak dziś. Pusty, gdy złożenie pliku się nie udało.
+     * Odnośnik sklepu z kluczem. Pusty, gdy złożenie pliku się nie udało.
      * Dla ofert gościa klucz sam wystarcza; dla oferty klienta zalogowanego
-     * pobranie wymaga DODATKOWO aktywnej sesji front-office tego klienta —
-     * zastrzeżenie nieobsłużone jeszcze przez samo dołożenie tego zasobu.
+     * pobranie wymaga DODATKOWO aktywnej sesji front-office tego klienta.
+     * Bez sesji plik oddaje operacja `/quince-offers/offers/{id}/pdf`.
      */
     public string $pdfUrl = '';
 }

@@ -20,14 +20,11 @@ use Quince\Offers\Settings\OfferStore;
 use Quince\Offers\Settings\PartnerLogos;
 
 /**
- * Quince Offers — oferta PDF zamiast rozmowy o cenie w mailu.
+ * Quince Offers: oferta PDF dla produktów wybranych przez klienta.
  *
- * Klient kupujący na firmę rzadko wrzuca sprzęt za kilkanaście tysięcy do
- * koszyka. Prosi o ofertę, bo potrzebuje dokumentu z ceną netto, terminem
- * i numerem, który da się pokazać przełożonemu. Moduł wystawia taki dokument
- * od razu, zamiast kazać mu czekać na odpowiedź handlowca.
+ * Moduł od razu wystawia dokument z ceną netto, terminem ważności i numerem.
  *
- * Numer nadaje sklep i on trzyma własną kopię oferty — także wtedy, gdy CRM
+ * Numer nadaje sklep i on trzyma własną kopię oferty, także wtedy, gdy CRM
  * jest niedostępny. Do CRM-u idzie powiadomienie przez nadajnik zdarzeń
  * silnika; to CRM jest księgą główną, ale sklep bez niego działa dalej.
  */
@@ -132,7 +129,7 @@ class Quince_Offers extends Module
     /**
      * Zgłoszenie do silnika: co dostarczamy i gdzie tego szukać.
      *
-     * Po instalacji ożywa też element „Pobierz ofertę" na karcie produktu —
+     * Po instalacji ożywa też element „Pobierz ofertę" na karcie produktu:
      * silnik zna jego miejsce, ale trzyma go wygaszonym, dopóki nie ma modułu,
      * który go obsłuży.
      *
