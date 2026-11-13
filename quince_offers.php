@@ -34,7 +34,7 @@ class Quince_Offers extends Module
     {
         $this->name = 'quince_offers';
         $this->tab = 'front_office_features';
-        $this->version = '0.4.3';
+        $this->version = '0.4.4';
         $this->author = 'Quince Project';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = ['min' => '9.2.0', 'max' => '9.99.99'];
