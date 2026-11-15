@@ -11,6 +11,10 @@ declare(strict_types=1);
 
 namespace Quince\Offers\ApiPlatform\Action;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;

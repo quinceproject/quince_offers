@@ -11,6 +11,10 @@ declare(strict_types=1);
 
 namespace Quince\Offers\Service;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use Db;
 use Quince\Offers\Settings\OfferSettings;
 use Quince\Offers\Settings\OfferStore;

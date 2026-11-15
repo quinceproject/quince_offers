@@ -11,6 +11,10 @@ declare(strict_types=1);
 
 namespace Quince\Offers\Controller\Admin;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use PrestaShopBundle\Security\Attribute\AdminSecurity;
 use Quince\Offers\Service\PdfGenerator;
 use Quince\Offers\Settings\OfferLog;

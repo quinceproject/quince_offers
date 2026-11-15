@@ -11,6 +11,10 @@ declare(strict_types=1);
 
 namespace Quince\Offers\ApiPlatform\Provider;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use Quince\Offers\Service\OfferReader;
