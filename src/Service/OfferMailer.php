@@ -43,7 +43,8 @@ final class OfferMailer
         $zmienne = [
             '{shop_name}' => $nazwaSklepu,
             '{shop_url}' => $kontekst->shop->getBaseURL(true),
-            '{customer_name}' => (string) $oferta['customer_name'],
+            // Imię wpisuje odwiedzający, a Mail::Send wkleja zmienne do HTML bez escapowania.
+            '{customer_name}' => htmlspecialchars((string) $oferta['customer_name'], ENT_QUOTES, 'UTF-8'),
             '{offer_number}' => (string) $oferta['number'],
             '{valid_until}' => (string) $oferta['valid_until'],
             '{message}' => $this->settings->text('EMAIL_BODY', $idLang),

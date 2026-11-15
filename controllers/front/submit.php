@@ -26,8 +26,9 @@ use Quince\Offers\Settings\OfferStore;
  *
  * Formularza nie sprawdzamy tutaj poza tym, co dotyczy samej oferty. Znacznik
  * strony, pułapkę, czas wypełnienia i limit powtórzeń bierze na siebie strażnik
- * silnika. Odpala się na `actionFrontControllerInitAfter` dla każdego żądania
- * niosącego jego pola i przerywa zanim ten kod się zacznie.
+ * silnika (`Quince\Engine\Form\GuardedEndpoint`): dla akcji `send` wymaga POST
+ * z polami strażnika i odrzuca zgłoszenie, zanim ten kod się zacznie. Akcje
+ * szuflady (`add`, `list`, `remove`) strażnik pomija.
  */
 class Quince_OffersSubmitModuleFrontController extends ModuleFrontController
 {
@@ -88,6 +89,18 @@ class Quince_OffersSubmitModuleFrontController extends ModuleFrontController
             return ['ok' => false, 'error' => 'email'];
         }
 
+        // Oferta idzie na adres wpisany w formularzu, więc limit liczymy też po
+        // adresie odbiorcy, nie tylko po nadawcy: inaczej formularz z wieloma
+        // adresami IP zasypałby PDF-ami cudzą skrzynkę z adresu sklepu.
+        // Stały „adres” licznika sprawia, że liczy się sam odbiorca. Okno 600 s to
+        // najdłuższe, jakie trzyma licznik strażnika (starsze wpisy sprząta).
+        $limit = class_exists(\Quince\Engine\Form\FormGuard::class) ? new \Quince\Engine\Form\FormGuard() : null;
+        $kluczOdbiorcy = 'offer_to_' . substr(sha1(strtolower($email)), 0, 32);
+
+        if ($limit !== null && $limit->tooOften($kluczOdbiorcy, 3, 600, 'recipient')) {
+            return ['ok' => false, 'error' => 'limit'];
+        }
+
         $idProduct = (int) Tools::getValue('id_product');
 
         if ($idProduct > 0) {
@@ -129,6 +142,7 @@ class Quince_OffersSubmitModuleFrontController extends ModuleFrontController
         }
 
         $wyslany = (new OfferMailer($ustawienia))->send($oferta);
+        $limit?->accept($kluczOdbiorcy, 'recipient');
 
         $this->zglosZdarzenie($oferta);
         $this->zapiszZgodeNaNewsletter($oferta);

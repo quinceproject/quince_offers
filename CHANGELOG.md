@@ -4,6 +4,16 @@ All notable changes to this module are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the versioning follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.5] - 2026-11-15
+
+### Security
+
+- The same e-mail address gets at most three offers in ten minutes, whichever
+  address the requests come from. Before, the offer form could be used to send PDFs
+  from the shop's address to any mailbox. Together with Quince Engine 0.8.1, which
+  makes the form guard mandatory for sending an offer.
+- The customer's name is escaped in the offer e-mail.
+
 ## [0.4.4] - 2026-11-13
 
 ### Fixed
