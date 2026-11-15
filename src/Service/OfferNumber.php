@@ -22,8 +22,9 @@ use Quince\Offers\Settings\OfferStore;
  * `OF/2026/09/0001`. Licznik jest osobny dla każdego sklepu, więc dwa sklepy
  * w jednej instalacji mają dwa ciągi numerów, każdy bez dziur.
  *
- * Podbicie i odczyt idą jednym zapytaniem z `ON DUPLICATE KEY UPDATE`, żeby dwa
- * zapytania wysłane w tej samej sekundzie nie dostały tego samego numeru.
+ * Podbicie i odczyt idą jednym zapytaniem z `ON DUPLICATE KEY UPDATE`
+ * i `LAST_INSERT_ID()`, żeby dwa zapytania wysłane w tej samej chwili nie
+ * dostały tego samego numeru.
  */
 final class OfferNumber
 {
@@ -50,17 +51,17 @@ final class OfferNumber
     {
         $tabela = _DB_PREFIX_ . OfferStore::TABLE_COUNTER;
 
-        Db::getInstance()->execute(
+        $db = Db::getInstance();
+
+        // `LAST_INSERT_ID(wyrażenie)` zapamiętuje nadany numer w tym połączeniu.
+        // Osobny SELECT po aktualizacji mógł przeczytać licznik podbity już
+        // przez równoległe zapytanie i dwie oferty dostawały ten sam numer.
+        $db->execute(
             'INSERT INTO `' . $tabela . '` (`id_shop`, `year`, `month`, `counter`)'
-            . ' VALUES (' . $idShop . ', ' . $rok . ', ' . $miesiac . ', 1)'
-            . ' ON DUPLICATE KEY UPDATE `counter` = `counter` + 1'
+            . ' VALUES (' . $idShop . ', ' . $rok . ', ' . $miesiac . ', LAST_INSERT_ID(1))'
+            . ' ON DUPLICATE KEY UPDATE `counter` = LAST_INSERT_ID(`counter` + 1)'
         );
 
-        return (int) Db::getInstance()->getValue(
-            'SELECT `counter` FROM `' . $tabela . '`'
-            . ' WHERE `id_shop` = ' . $idShop
-            . ' AND `year` = ' . $rok
-            . ' AND `month` = ' . $miesiac
-        );
+        return (int) $db->Insert_ID();
     }
 }

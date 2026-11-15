@@ -102,7 +102,8 @@ final class OfferLog
     public function one(int $idOffer): ?array
     {
         $oferta = \Db::getInstance()->getRow(
-            'SELECT * FROM `' . _DB_PREFIX_ . OfferStore::TABLE . '` WHERE id_offer = ' . $idOffer
+            'SELECT * FROM `' . _DB_PREFIX_ . OfferStore::TABLE . '` o WHERE o.id_offer = ' . $idOffer
+            . ' AND ' . $this->shopCondition()
         );
 
         if (!$oferta) {
@@ -142,14 +143,15 @@ final class OfferLog
             'SELECT c.iso_code AS currency, SUM(o.total_net) AS sum'
             . ' FROM ' . $tabela . ' o'
             . ' LEFT JOIN `' . _DB_PREFIX_ . 'currency` c ON c.id_currency = o.id_currency'
-            . ' WHERE o.date_add >= "' . pSQL($odPoczatkuMiesiaca) . '"'
+            . ' WHERE o.date_add >= "' . pSQL($odPoczatkuMiesiaca) . '" AND ' . $this->shopCondition()
             . ' GROUP BY o.id_currency'
         ) ?: [];
 
         return [
-            'total' => (int) Db::getInstance()->getValue('SELECT COUNT(*) FROM ' . $tabela),
+            'total' => (int) Db::getInstance()->getValue('SELECT COUNT(*) FROM ' . $tabela . ' o WHERE ' . $this->shopCondition()),
             'month' => (int) Db::getInstance()->getValue(
-                'SELECT COUNT(*) FROM ' . $tabela . ' WHERE date_add >= "' . pSQL($odPoczatkuMiesiaca) . '"'
+                'SELECT COUNT(*) FROM ' . $tabela . ' o WHERE o.date_add >= "' . pSQL($odPoczatkuMiesiaca) . '"'
+                . ' AND ' . $this->shopCondition()
             ),
             'sums' => array_map(static fn (array $w): array => [
                 'currency' => (string) $w['currency'],
@@ -161,7 +163,7 @@ final class OfferLog
     /** @param array{search:string,from:string,to:string} $filtry */
     private function where(array $filtry): string
     {
-        $warunki = [];
+        $warunki = [$this->shopCondition()];
 
         if ($filtry['search'] !== '') {
             $szukane = pSQL($filtry['search']);
@@ -180,6 +182,23 @@ final class OfferLog
             $warunki[] = 'o.date_add <= "' . pSQL($filtry['to']) . ' 23:59:59"';
         }
 
-        return $warunki === [] ? '' : ' WHERE ' . implode(' AND ', $warunki);
+        return ' WHERE ' . implode(' AND ', $warunki);
+    }
+
+    /**
+     * Oferty tylko ze sklepów, które są w wybranym kontekście i do których
+     * pracownik ma dostęp. Oferta niesie dane klienta (adres, nazwę, telefon),
+     * a pracownik przypisany do jednego sklepu nie powinien widzieć klientów
+     * pozostałych. SuperAdmin ma dostęp do wszystkich sklepów.
+     */
+    private function shopCondition(): string
+    {
+        $pracownik = \Context::getContext()->employee;
+        $sklepy = array_values(array_filter(
+            array_map('intval', \Shop::getContextListShopID()),
+            static fn (int $id): bool => $pracownik instanceof \Employee && $pracownik->hasAuthOnShop($id)
+        ));
+
+        return $sklepy === [] ? '0 = 1' : 'o.id_shop IN (' . implode(',', $sklepy) . ')';
     }
 }

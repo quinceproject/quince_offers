@@ -4,6 +4,20 @@ All notable changes to this module are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the versioning follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.8] - 2026-11-15
+
+### Security
+
+- **In a multistore, the offer log shows only offers from shops the employee may
+  manage**, within the shop context chosen in the admin. This applies to the list, the
+  counters at the top and opening or rebuilding a single offer's PDF. Before, an
+  employee limited to one shop saw the customer data from offers of every shop.
+
+### Fixed
+
+- Two offers sent at the same moment can no longer get the same number. The counter
+  is now raised and read in a single database query.
+
 ## [0.4.7] - 2026-11-15
 
 ### Security
