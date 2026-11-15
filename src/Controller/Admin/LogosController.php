@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace Quince\Offers\Controller\Admin;
 
+use PrestaShopBundle\Security\Attribute\AdminSecurity;
 use Quince\Offers\Settings\PartnerLogos;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,6 +30,7 @@ class LogosController extends OffersBaseController
     {
     }
 
+    #[AdminSecurity("is_granted('read', request.get('_legacy_controller'))", message: 'You do not have permission to view this.')]
     public function indexAction(): Response
     {
         return $this->renderPanel('@Modules/quince_offers/views/templates/admin/logos.html.twig', [
@@ -36,6 +38,7 @@ class LogosController extends OffersBaseController
         ] + $this->chrome('quince_offers_logos'));
     }
 
+    #[AdminSecurity("is_granted('update', request.get('_legacy_controller'))", message: 'You do not have permission to change this.')]
     public function saveAction(Request $request): RedirectResponse
     {
         if (!$this->isCsrfTokenValid('quince_offers_logos_save', $request->request->get('_csrf_token'))) {
@@ -59,6 +62,7 @@ class LogosController extends OffersBaseController
         return $this->redirectToRoute('quince_offers_logos');
     }
 
+    #[AdminSecurity("is_granted('delete', request.get('_legacy_controller'))", message: 'You do not have permission to delete this.')]
     public function deleteAction(Request $request): RedirectResponse
     {
         if (!$this->isCsrfTokenValid('quince_offers_logos_delete', $request->request->get('_csrf_token'))) {

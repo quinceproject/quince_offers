@@ -1,13 +1,14 @@
 # Ekran ofert.
 #
-# `_legacy_controller` wskazuje zakładkę silnika, bo moduł bez niego nie działa.
-# Uprawnienia PrestaShop sprawdza więc na zakładce silnika.
+# `_legacy_controller` wskazuje własną zakładkę modułu (`AdminQuinceOffers`).
+# Do niej odnoszą się uprawnienia pracownika: atrybuty `#[AdminSecurity]`
+# w kontrolerach sprawdzają prawa do tej zakładki.
 quince_offers:
   path: quince/offers
   methods: [GET]
   defaults:
     _controller: Quince\Offers\Controller\Admin\OffersController::indexAction
-    _legacy_controller: 'AdminQuince'
+    _legacy_controller: 'AdminQuinceOffers'
     _legacy_link: 'AdminQuince'
 
 # Dziennik ofert. Osobna trasa, bo filtr, strona i sortowanie muszą mieścić się
@@ -17,7 +18,7 @@ quince_offers_log:
   methods: [GET]
   defaults:
     _controller: Quince\Offers\Controller\Admin\LogController::indexAction
-    _legacy_controller: 'AdminQuince'
+    _legacy_controller: 'AdminQuinceOffers'
     _legacy_link: 'AdminQuince'
 
 quince_offers_log_file:
@@ -25,7 +26,7 @@ quince_offers_log_file:
   methods: [GET]
   defaults:
     _controller: Quince\Offers\Controller\Admin\LogController::fileAction
-    _legacy_controller: 'AdminQuince'
+    _legacy_controller: 'AdminQuinceOffers'
     _legacy_link: 'AdminQuince'
 
 quince_offers_log_build:
@@ -33,7 +34,7 @@ quince_offers_log_build:
   methods: [POST]
   defaults:
     _controller: Quince\Offers\Controller\Admin\LogController::buildAction
-    _legacy_controller: 'AdminQuince'
+    _legacy_controller: 'AdminQuinceOffers'
     _legacy_link: 'AdminQuince:save'
 
 # Logotypy partnerów: lista, wgranie pliku i skasowanie wpisu.
@@ -42,7 +43,7 @@ quince_offers_logos:
   methods: [GET]
   defaults:
     _controller: Quince\Offers\Controller\Admin\LogosController::indexAction
-    _legacy_controller: 'AdminQuince'
+    _legacy_controller: 'AdminQuinceOffers'
     _legacy_link: 'AdminQuince'
 
 quince_offers_logos_save:
@@ -50,7 +51,7 @@ quince_offers_logos_save:
   methods: [POST]
   defaults:
     _controller: Quince\Offers\Controller\Admin\LogosController::saveAction
-    _legacy_controller: 'AdminQuince'
+    _legacy_controller: 'AdminQuinceOffers'
     _legacy_link: 'AdminQuince:save'
 
 quince_offers_logos_delete:
@@ -58,7 +59,7 @@ quince_offers_logos_delete:
   methods: [POST]
   defaults:
     _controller: Quince\Offers\Controller\Admin\LogosController::deleteAction
-    _legacy_controller: 'AdminQuince'
+    _legacy_controller: 'AdminQuinceOffers'
     _legacy_link: 'AdminQuince:delete'
 
 quince_offers_save:
@@ -66,5 +67,5 @@ quince_offers_save:
   methods: [POST]
   defaults:
     _controller: Quince\Offers\Controller\Admin\OffersController::saveAction
-    _legacy_controller: 'AdminQuince'
+    _legacy_controller: 'AdminQuinceOffers'
     _legacy_link: 'AdminQuince:save'

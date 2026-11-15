@@ -266,16 +266,31 @@ class Quince_OffersSubmitModuleFrontController extends ModuleFrontController
             return;
         }
 
+        // Adres w formularzu oferty wpisuje każdy, więc dowodem zgody tej osoby
+        // jest tylko adres zalogowanego klienta z jego konta. Inny adres to
+        // zgoda niepotwierdzona: zapisujemy ją z tym oznaczeniem, żeby system
+        // zewnętrzny poprosił o potwierdzenie, a odznaczonego pola nie zapisujemy
+        // wcale, bo wycofałoby zgodę osobie, która o niczym nie wie.
+        $klient = $this->context->customer;
+        $potwierdzony = $klient && $klient->isLogged()
+            && strcasecmp((string) $klient->email, (string) $oferta['email']) === 0;
+        $zgoda = (bool) $oferta['newsletter'];
+
+        if (!$potwierdzony && !$zgoda) {
+            return;
+        }
+
         (new \Quince\Cmp\Storage\ConsentLog())->record(
             'newsletter',
-            (bool) $oferta['newsletter'],
+            $zgoda,
             (int) $oferta['id_shop'],
             (int) $oferta['id_lang'],
             [
                 'email' => (string) $oferta['email'],
-                'id_customer' => (int) $oferta['id_customer'],
+                'id_customer' => $potwierdzony ? (int) $klient->id : 0,
                 'source' => \Quince\Cmp\Storage\ConsentLog::SOURCE_NEWSLETTER,
-                'form_id' => 'quince_offers',
+                'form_id' => $potwierdzony ? 'quince_offers' : 'quince_offers:unverified',
+                'note' => $potwierdzony ? '' : 'E-mail address not verified',
             ]
         );
     }

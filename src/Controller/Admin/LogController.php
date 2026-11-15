@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace Quince\Offers\Controller\Admin;
 
+use PrestaShopBundle\Security\Attribute\AdminSecurity;
 use Quince\Offers\Service\PdfGenerator;
 use Quince\Offers\Settings\OfferLog;
 use Quince\Offers\Settings\OfferSettings;
@@ -35,6 +36,7 @@ class LogController extends OffersBaseController
     ) {
     }
 
+    #[AdminSecurity("is_granted('read', request.get('_legacy_controller'))", message: 'You do not have permission to view this.')]
     public function indexAction(Request $request): Response
     {
         $filtry = [
@@ -74,6 +76,7 @@ class LogController extends OffersBaseController
      * by nie wystarczył, bo oferta wystawiona zalogowanemu klientowi wpuszcza
      * tylko jego.
      */
+    #[AdminSecurity("is_granted('read', request.get('_legacy_controller'))", message: 'You do not have permission to view this.')]
     public function fileAction(Request $request): Response
     {
         $oferta = $this->log->one((int) $request->query->get('id'));
@@ -102,6 +105,7 @@ class LogController extends OffersBaseController
      * udało. Ceny i pozycje bierzemy z zapisanego wiersza, nie z katalogu:
      * dokument ma odtworzyć ofertę z dnia wystawienia, a nie dzisiejszy cennik.
      */
+    #[AdminSecurity("is_granted('update', request.get('_legacy_controller'))", message: 'You do not have permission to change this.')]
     public function buildAction(Request $request): RedirectResponse
     {
         if (!$this->isCsrfTokenValid('quince_offers_log_build', $request->request->get('_csrf_token'))) {

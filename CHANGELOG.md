@@ -4,6 +4,21 @@ All notable changes to this module are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the versioning follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.6] - 2026-11-15
+
+### Security
+
+- Every back-office screen of the module checks the employee's permissions. Before,
+  any logged-in employee, whatever their profile, could open the offer log with
+  customers' details and change the settings. The screens now belong to the module's
+  own menu tab (`AdminQuinceOffers`): grant it to a profile under **Advanced
+  Parameters → Team → Permissions**. SuperAdmin needs nothing. A profile that had
+  access through the hidden `AdminQuince` tab needs access to this tab now.
+- The newsletter box in the offer form no longer records consent as confirmed for an
+  address anyone can type in. For a visitor who is not signed in with that address the
+  consent goes to Quince CMP marked as unverified, and an unticked box records nothing,
+  so it cannot withdraw another person's consent.
+
 ## [0.4.5] - 2026-11-15
 
 ### Security

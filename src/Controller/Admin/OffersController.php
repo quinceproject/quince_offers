@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace Quince\Offers\Controller\Admin;
 
+use PrestaShopBundle\Security\Attribute\AdminSecurity;
 use Quince\Offers\Settings\OfferSettings;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,6 +30,7 @@ class OffersController extends OffersBaseController
     {
     }
 
+    #[AdminSecurity("is_granted('read', request.get('_legacy_controller'))", message: 'You do not have permission to view this.')]
     public function indexAction(): Response
     {
         return $this->renderPanel('@Modules/quince_offers/views/templates/admin/offers.html.twig', [
@@ -39,6 +41,7 @@ class OffersController extends OffersBaseController
         ] + $this->chrome('quince_offers'));
     }
 
+    #[AdminSecurity("is_granted('update', request.get('_legacy_controller'))", message: 'You do not have permission to change this.')]
     public function saveAction(Request $request): RedirectResponse
     {
         if (!$this->isCsrfTokenValid('quince_offers_save', $request->request->get('_csrf_token'))) {
