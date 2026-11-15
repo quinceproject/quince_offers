@@ -100,6 +100,10 @@ final class PdfGenerator
                 // do odczytu, a mPDF pisze tam pliki tymczasowe czcionek.
                 'tempDir' => $katalog . 'tmp',
                 'default_font' => 'dejavusanscondensed',
+                // Opis produktu idzie do PDF jako HTML: bez `http(s)` obrazek z opisu
+                // nie wyśle serwera sklepu pod dowolny adres. Logo i zdjęcia bierzemy
+                // z dysku, więc ich to nie dotyczy.
+                'whitelistStreamWrappers' => ['file'],
             ]);
 
             $pdf->SetTitle((string) $oferta['number']);
@@ -285,7 +289,7 @@ final class PdfGenerator
 
         if ($dane['description'] !== '') {
             $sekcja .= '<div class="band">' . $this->t('Product description', $idLang) . '</div>'
-                . '<div class="desc">' . $dane['description'] . '</div>';
+                . '<div class="desc">' . $this->localImages($dane['description']) . '</div>';
         }
 
         if ($dane['features'] !== []) {
@@ -599,6 +603,67 @@ final class PdfGenerator
             ? '<div style="font-size:13pt;font-weight:bold">'
                 . $this->e((string) Configuration::get('PS_SHOP_NAME')) . '</div>'
             : '<img src="' . $this->e($sciezka) . '" style="max-height:16mm;max-width:60mm">';
+    }
+
+    /**
+     * Obrazki z opisu produktu leżące w tym sklepie: adres zamieniony na plik na dysku.
+     *
+     * mPDF nie pobiera niczego przez `http(s)` (`whitelistStreamWrappers`), więc bez
+     * tego zdjęcia wstawione w opis zniknęłyby z oferty. Obce adresy zostają
+     * bez zmian, a mPDF je pomija.
+     */
+    private function localImages(string $html): string
+    {
+        $hosty = array_values(array_filter(array_map('strtolower', [
+            (string) \Tools::getShopDomain(false),
+            (string) \Tools::getShopDomainSsl(false),
+        ])));
+        $baza = (string) (Context::getContext()->shop->physical_uri ?? '');
+        $korzen = realpath(_PS_ROOT_DIR_);
+
+        if ($korzen === false) {
+            return $html;
+        }
+
+        // Błąd wyrażenia (null) nie może skasować opisu: wtedy zostaje oryginał.
+        return preg_replace_callback(
+            '#(<img\b[^>]*?\bsrc\s*=\s*)(["\'])(.*?)\2#is',
+            function (array $m) use ($hosty, $baza, $korzen): string {
+                $adres = html_entity_decode($m[3], ENT_QUOTES, 'UTF-8');
+                $czesci = parse_url($adres);
+
+                if ($czesci === false || empty($czesci['path'])) {
+                    return $m[0];
+                }
+
+                if (isset($czesci['host'])) {
+                    $schemat = strtolower($czesci['scheme'] ?? 'https');
+
+                    if (!in_array($schemat, ['http', 'https'], true) || !in_array(strtolower($czesci['host']), $hosty, true)) {
+                        return $m[0];
+                    }
+                } elseif (isset($czesci['scheme']) || !str_starts_with($adres, '/')) {
+                    return $m[0];
+                }
+
+                $sciezka = rawurldecode((string) $czesci['path']);
+
+                if ($baza !== '' && str_starts_with($sciezka, $baza)) {
+                    $sciezka = substr($sciezka, strlen($baza));
+                }
+
+                // Tylko plik obrazka wewnątrz katalogu sklepu.
+                $plik = realpath($korzen . '/' . ltrim($sciezka, '/'));
+
+                if ($plik === false || !str_starts_with($plik, $korzen . DIRECTORY_SEPARATOR)
+                    || !preg_match('/\.(jpe?g|png|gif|webp)$/i', $plik) || !is_file($plik)) {
+                    return $m[0];
+                }
+
+                return $m[1] . $m[2] . $this->e($plik) . $m[2];
+            },
+            $html
+        ) ?? $html;
     }
 
     /**

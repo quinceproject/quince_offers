@@ -4,6 +4,17 @@ All notable changes to this module are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the versioning follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.7] - 2026-11-15
+
+### Security
+
+- **The PDF generator no longer fetches remote files.** A product description with an
+  image or stylesheet from another address made the shop's server request it every
+  time an offer was generated. Images in descriptions that point to the shop itself
+  are read from disk and still appear in the PDF; images from other domains do not.
+- The `libs/` folder is closed to the web, and an unused mPDF script that read a file
+  name from the request is removed.
+
 ## [0.4.6] - 2026-11-15
 
 ### Security
