@@ -149,6 +149,13 @@ final class PdfGenerator
             $czesci[] = $this->productSection($oferta, $pozycja, $partner, $marka);
         }
 
+        // Kontakt raz, na końcu oferty, a nie pod każdym produktem: przy
+        // ofercie zbiorczej ta sama osoba powtarzała się przy każdej pozycji.
+        // Przy ofercie dla partnera odpada, jak dotąd.
+        if (!$partner) {
+            $czesci[] = $this->contactBlock($oferta);
+        }
+
         $czesci[] = '<hr class="sep">';
         $czesci[] = $this->closing($oferta, $partner);
 
@@ -307,27 +314,50 @@ final class PdfGenerator
         }
 
         if (!$partner && $dane['link'] !== '') {
-            $sekcja .= $this->contactBlock($oferta, $dane['link']);
+            $sekcja .= $this->qrRow($oferta, $dane['link']);
         }
 
         return $sekcja;
     }
 
     /**
-     * Kontakt i kod QR pod produktem.
+     * Kod QR pod produktem.
      *
      * Kod prowadzi do karty produktu, więc oferta wydrukowana i położona na
-     * biurku dalej prowadzi do sklepu. Osobę bierzemy z modułu kontaktów, jeśli
-     * sklep go ma; bez niego zostaje adres i telefon sklepu.
+     * biurku dalej prowadzi do sklepu. Napis stoi w tym samym wierszu, po lewej,
+     * w barwie tekstu: to polecenie dla czytelnika, a nie przypis.
      *
      * @param array<string,mixed> $oferta
      */
-    private function contactBlock(array $oferta, string $link): string
+    private function qrRow(array $oferta, string $link): string
+    {
+        $idLang = (int) $oferta['id_lang'];
+
+        return '<table width="100%" class="card" style="margin-top:6mm"><tr>'
+            . '<td width="65%" valign="middle" align="left" style="padding:6mm;font-size:10pt;color:' . self::INK . '">'
+            . $this->t('Scan to open the product', $idLang)
+            . '</td>'
+            . '<td width="35%" valign="middle" align="right" style="padding:6mm">'
+            . '<barcode code="' . $this->e($this->utm($link, 'qr_code', (string) $oferta['number']))
+            . '" type="QR" class="barcode" size="1.2" error="M">'
+            . '</td></tr></table>';
+    }
+
+    /**
+     * Kontakt na końcu oferty.
+     *
+     * Osobę bierzemy z modułu kontaktów, jeśli sklep go ma: zdjęcie po lewej,
+     * obok imię i nazwisko, pod nim stanowisko, potem telefon i adres. Bez
+     * modułu zostaje nazwa, telefon i adres sklepu.
+     *
+     * @param array<string,mixed> $oferta
+     */
+    private function contactBlock(array $oferta): string
     {
         $idLang = (int) $oferta['id_lang'];
         $osoba = $this->expert($idLang);
 
-        $lewa = $osoba === null
+        $dane = $osoba === null
             ? '<b>' . $this->e((string) Configuration::get('PS_SHOP_NAME')) . '</b><br>'
                 . $this->e((string) Configuration::get('PS_SHOP_PHONE')) . '<br>'
                 . $this->e((string) Configuration::get('PS_SHOP_EMAIL'))
@@ -336,14 +366,15 @@ final class PdfGenerator
                 . ($osoba['phone'] === '' ? '' : '<br>' . $this->e($osoba['phone']))
                 . ($osoba['email'] === '' ? '' : '<br>' . $this->e($osoba['email']));
 
+        $zdjecie = $osoba['photo'] ?? '';
+
         return '<div class="band">' . $this->t('Questions? Talk to us', $idLang) . '</div>'
             . '<table width="100%" class="card"><tr>'
-            . '<td width="65%" valign="middle" style="padding:6mm;font-size:9pt">' . $lewa . '</td>'
-            . '<td width="35%" valign="middle" align="center" style="padding:6mm">'
-            . '<barcode code="' . $this->e($this->utm($link, 'qr_code', (string) $oferta['number']))
-            . '" type="QR" class="barcode" size="1.2" error="M">'
-            . '<div class="tiny" style="margin-top:2mm">' . $this->t('Scan to open the product', $idLang) . '</div>'
-            . '</td></tr></table>';
+            . ($zdjecie === '' ? '' : '<td width="28mm" valign="middle" style="padding:6mm 0 6mm 6mm">'
+                . '<img src="' . $this->e($zdjecie) . '" style="width:22mm;height:22mm">'
+                . '</td>')
+            . '<td valign="middle" style="padding:6mm;font-size:9pt">' . $dane . '</td>'
+            . '</tr></table>';
     }
 
     /**
@@ -522,16 +553,63 @@ final class PdfGenerator
 
         foreach ((new \Quince\Contacts\Settings\People())->all($idLang) as $osoba) {
             if (!empty($osoba['active'])) {
+                $idContact = (int) ($osoba['id_contact'] ?? 0);
+
+                // Stanowisko przychodzi po językach (`job_titles`). Wcześniej
+                // czytaliśmy nieistniejące `job_title` i `phone`, więc PDF
+                // pokazywał samo imię i adres, choć dane były wpisane.
                 return [
                     'name' => (string) ($osoba['name'] ?? ''),
-                    'job' => (string) ($osoba['job_title'] ?? ''),
-                    'phone' => (string) ($osoba['phone'] ?? ''),
+                    'job' => (string) ($osoba['job_titles'][$idLang] ?? ''),
+                    'phone' => $this->expertPhone($idContact),
                     'email' => (string) ($osoba['email'] ?? ''),
+                    'photo' => $this->expertPhoto((string) ($osoba['photo'] ?? '')),
                 ];
             }
         }
 
         return null;
+    }
+
+    /**
+     * Telefon osoby: pole dodatkowe encji kontaktu, które dokłada moduł
+     * kontaktów (ta sama kolumna, którą czyta `People::card()`). Starsza wersja
+     * modułu może tej kolumny nie mieć, wtedy telefonu po prostu nie ma.
+     */
+    private function expertPhone(int $idContact): string
+    {
+        if ($idContact <= 0) {
+            return '';
+        }
+
+        try {
+            $telefon = \Db::getInstance()->getValue(
+                'SELECT `quince_contacts_phone` FROM `' . _DB_PREFIX_ . 'contact_extra`'
+                . ' WHERE id_contact = ' . $idContact
+            );
+        } catch (\Throwable $e) {
+            return '';
+        }
+
+        return is_string($telefon) ? trim($telefon) : '';
+    }
+
+    /**
+     * Zdjęcie osoby jako ścieżka z dysku: mPDF nie pobiera obrazów po sieci.
+     * Tylko formaty, które mPDF czyta; nazwa pliku bez katalogów, żeby z bazy
+     * nie dało się wskazać pliku spoza katalogu zdjęć.
+     */
+    private function expertPhoto(string $plik): string
+    {
+        $plik = basename($plik);
+
+        if ($plik === '' || !preg_match('/\.(jpe?g|png|webp)$/i', $plik)) {
+            return '';
+        }
+
+        $sciezka = _PS_IMG_DIR_ . 'quince/contacts/' . $plik;
+
+        return is_file($sciezka) ? $sciezka : '';
     }
 
     /** @param array<int,array{name:string,value:string}> $cechy */
@@ -727,16 +805,30 @@ final class PdfGenerator
      * Oferta wychodzi do kupującego, więc język bierzemy z niej samej. Napisy
      * z panelu jechałyby po polsku do niemieckiego klienta tylko dlatego, że
      * po polsku pracuje sprzedawca.
+     *
+     * Tłumacz bieżącego żądania ma wczytane tłumaczenia modułów tylko dla
+     * języka tego żądania. Poproszony o inny język oddaje napis źródłowy, więc
+     * PDF wychodził po angielsku. `getTranslatorFromLocale()` wczytuje komplet
+     * dla wskazanego języka (rdzeń używa go do maili do klienta). Jeden tłumacz
+     * na język, na czas składania pliku.
      */
     private function t(string $napis, int $idLang): string
     {
-        return Context::getContext()->getTranslator()->trans(
-            $napis,
-            [],
-            'Modules.Quinceoffers.Pdf',
-            \Language::getLocaleById($idLang) ?: null
-        );
+        $locale = (string) (\Language::getLocaleById($idLang) ?: '');
+
+        if ($locale === '') {
+            return Context::getContext()->getTranslator()->trans($napis, [], 'Modules.Quinceoffers.Pdf');
+        }
+
+        if (!isset($this->tlumacze[$locale])) {
+            $this->tlumacze[$locale] = Context::getContext()->getTranslatorFromLocale($locale);
+        }
+
+        return $this->tlumacze[$locale]->trans($napis, [], 'Modules.Quinceoffers.Pdf', $locale);
     }
+
+    /** @var array<string,\Symfony\Contracts\Translation\TranslatorInterface> tłumacze po języku */
+    private array $tlumacze = [];
 
     private function e(string $tekst): string
     {

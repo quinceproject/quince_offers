@@ -4,6 +4,25 @@ All notable changes to this module are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the versioning follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.10] - 2026-11-16
+
+### Fixed
+
+- The quote PDF is written in the language of the quote. A quote for a Polish
+  customer had every heading in English: the module had no Polish translation for
+  the PDF, and the translator of the current request only knows the current
+  language. Polish translations added for all PDF texts.
+- The contact person in the PDF shows the job title and the phone number from
+  Quince Contacts. Before, they were read under wrong names and never showed.
+
+### Changed
+
+- In a quote with several products the contact block ("Questions? Talk to us")
+  stands once, at the end, instead of under every product. It shows the person's
+  photo on the left, then the name, job title, phone and email.
+- Under each product stays only the QR code row: "Scan to open the product" on the
+  left, in the text colour and a larger size, the code on the right.
+
 ## [0.4.9] - 2026-11-16
 
 ### Changed

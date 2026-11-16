@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en-US" target-language="pl-PL" datatype="plaintext" original="ModulesQuinceoffersPdf">
+    <body>
+
+      <!-- Plik PDF oferty (src/Service/PdfGenerator.php). Bez tego pliku oferta
+           złożona dla klienta polskiego miała wszystkie nagłówki po angielsku. -->
+
+      <!-- nagłówek dokumentu -->
+      <trans-unit id="quince.offers.pdf.quote">
+        <source>Quote</source>
+        <target>Oferta</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.pdf.no">
+        <source>No.</source>
+        <target>Nr</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.pdf.issued">
+        <source>Issued</source>
+        <target>Data wystawienia</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.pdf.valid_until">
+        <source>Valid until</source>
+        <target>Ważna do</target>
+      </trans-unit>
+
+      <!-- produkt -->
+      <trans-unit id="quince.offers.pdf.net">
+        <source>net</source>
+        <target>netto</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.pdf.gross">
+        <source>gross</source>
+        <target>brutto</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.pdf.quantity">
+        <source>Quantity</source>
+        <target>Ilość</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.pdf.see_in_shop">
+        <source>See it in the shop</source>
+        <target>Zobacz w sklepie</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.pdf.description">
+        <source>Product description</source>
+        <target>Opis produktu</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.pdf.specification">
+        <source>Technical specification</source>
+        <target>Specyfikacja techniczna</target>
+      </trans-unit>
+
+      <!-- tabela wariantów -->
+      <trans-unit id="quince.offers.pdf.variants">
+        <source>Variants</source>
+        <target>Warianty</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.pdf.variant">
+        <source>Variant</source>
+        <target>Wariant</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.pdf.reference">
+        <source>Reference</source>
+        <target>Indeks</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.pdf.price_change">
+        <source>Price change</source>
+        <target>Zmiana ceny</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.pdf.net_col">
+        <source>Net</source>
+        <target>Netto</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.pdf.gross_col">
+        <source>Gross</source>
+        <target>Brutto</target>
+      </trans-unit>
+
+      <!-- kontakt -->
+      <trans-unit id="quince.offers.pdf.contact">
+        <source>Questions? Talk to us</source>
+        <target>Masz pytania? Porozmawiaj z nami</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.pdf.scan">
+        <source>Scan to open the product</source>
+        <target>Zeskanuj, aby otworzyć produkt</target>
+      </trans-unit>
+
+    </body>
+  </file>
+</xliff>
