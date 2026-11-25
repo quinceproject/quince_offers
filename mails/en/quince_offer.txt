@@ -3,6 +3,6 @@
 
 {message}
 
-Valid until: {valid_until}
+Valid until: {valid_until_date}
 
 {shop_url}

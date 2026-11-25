@@ -1,21 +1,44 @@
 <!doctype html>
-<html>
-<head><meta charset="utf-8"><title>{shop_name}</title></head>
-<body style="margin:0;padding:24px;background:#f6f6f6;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;background:#ffffff;padding:24px">
-    <tr><td>
-      <h1 style="margin:0 0 4px;font-size:20px">{shop_name}</h1>
-      <p style="margin:0 0 20px;color:#65635d;font-size:13px">{offer_number}</p>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{shop_name}: {offer_number}</title>
+<link href="{fonts_href}" rel="stylesheet" type="text/css">
+<style type="text/css">
+  @media only screen and (max-width: 480px) {
+    .q-pad { padding-left: 20px !important; padding-right: 20px !important; }
+  }
+</style>
+</head>
+<body style="margin:0;padding:0;background:#f0f0ef">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f0f0ef">
+  <tr><td align="center">
+    <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px">
+      <tr><td align="center" style="padding:32px 0 24px">
+        <a href="{shop_url}"><img src="{shop_logo}" alt="{shop_name}" width="180" style="display:block;border:0;width:180px;max-width:180px;height:auto"></a>
+      </td></tr>
+      <tr><td style="background:{color_primary};height:4px;line-height:4px;font-size:0">&nbsp;</td></tr>
+      <tr><td class="q-pad" style="background:#ffffff;padding:36px 40px;font-family:{font_body};font-size:15px;line-height:24px;color:#141414">
 
-      <p style="margin:0 0 16px">{message}</p>
+        <div style="font-size:12px;line-height:20px;font-weight:700;letter-spacing:0.6px;text-transform:uppercase;color:#7a7a7a;padding:0 0 4px">Offer {offer_number}</div>
+        <div style="font-family:{font_heading};font-size:24px;line-height:32px;font-weight:700;padding:0 0 16px">Your offer is ready</div>
+        <div style="padding:0 0 16px">Hello {customer_name},</div>
+        {message_block}
 
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:14px;border-top:1px solid #e2e1df;border-bottom:1px solid #e2e1df">
-        {items}
-      </table>
+        {summary_box}
+        {items_table}
+        {pdf_button}
+        {expert_card}
 
-      <p style="margin:16px 0 0;font-size:13px;color:#65635d">Valid until: {valid_until}</p>
-      <p style="margin:24px 0 0;font-size:13px"><a href="{shop_url}" style="color:#1a1a1a">{shop_url}</a></p>
-    </td></tr>
-  </table>
+      </td></tr>
+      <tr><td class="q-pad" style="background:{color_dark};padding:24px 40px;font-family:{font_body};font-size:12px;line-height:20px;color:#b7b7b7">
+        Sent by: {company}<br><br>
+        You are receiving this message because you asked for an offer at <a href="{shop_url}" style="color:{color_primary};font-weight:700;text-decoration:none">{shop_domain}</a>.
+      </td></tr>
+      <tr><td style="height:24px;line-height:24px;font-size:0">&nbsp;</td></tr>
+    </table>
+  </td></tr>
+</table>
 </body>
 </html>

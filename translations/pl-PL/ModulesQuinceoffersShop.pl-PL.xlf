@@ -76,6 +76,52 @@
         <target>Dodaj do listy ofertowej</target>
       </trans-unit>
 
+      <!-- Mail z ofertą (OfferMailLayout) -->
+      <trans-unit id="quince.offers.shop.mail.number">
+        <source>Offer number</source>
+        <target>Numer oferty</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.shop.mail.valid">
+        <source>Valid until</source>
+        <target>Ważna do</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.shop.mail.total">
+        <source>Total</source>
+        <target>Razem</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.shop.mail.items">
+        <source>Items</source>
+        <target>Pozycje</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.shop.mail.sku">
+        <source>SKU</source>
+        <target>SKU</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.shop.mail.pcs">
+        <source>pcs</source>
+        <target>szt.</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.shop.mail.net">
+        <source>net</source>
+        <target>netto</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.shop.mail.gross">
+        <source>gross</source>
+        <target>brutto</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.shop.mail.pdf">
+        <source>Download the offer (PDF)</source>
+        <target>Pobierz ofertę (PDF)</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.shop.mail.attached">
+        <source>The full offer in PDF is also attached to this message.</source>
+        <target>Pełna oferta w PDF jest też w załączniku tej wiadomości.</target>
+      </trans-unit>
+      <trans-unit id="quince.offers.shop.mail.expert">
+        <source>Questions? Talk to us</source>
+        <target>Masz pytania? Porozmawiaj z nami</target>
+      </trans-unit>
+
     </body>
   </file>
 </xliff>

@@ -44,16 +44,28 @@ final class OfferMailer
         $idLang = (int) $oferta['id_lang'];
         $nazwaSklepu = (string) Configuration::get('PS_SHOP_NAME');
 
+        $wiadomosc = $this->settings->text('EMAIL_BODY', $idLang);
+
+        // Odnośnik do pliku przez kontroler z kluczem; bez pliku nie ma przycisku.
+        $adresPdf = (string) ($oferta['pdf_file'] ?? '') === '' ? '' : $kontekst->link->getModuleLink(
+            'quince_offers',
+            'pdf',
+            ['token' => (string) $oferta['pdf_token']],
+            null,
+            $idLang,
+            (int) $oferta['id_shop']
+        );
+
         $zmienne = [
             '{shop_name}' => $nazwaSklepu,
             '{shop_url}' => $kontekst->shop->getBaseURL(true),
             // Imię wpisuje odwiedzający, a Mail::Send wkleja zmienne do HTML bez escapowania.
             '{customer_name}' => htmlspecialchars((string) $oferta['customer_name'], ENT_QUOTES, 'UTF-8'),
-            '{offer_number}' => (string) $oferta['number'],
+            '{offer_number}' => htmlspecialchars((string) $oferta['number'], ENT_QUOTES, 'UTF-8'),
             '{valid_until}' => (string) $oferta['valid_until'],
-            '{message}' => $this->settings->text('EMAIL_BODY', $idLang),
+            '{message}' => $wiadomosc,
             '{items}' => $this->itemsHtml($oferta['items'] ?? []),
-        ];
+        ] + (new OfferMailLayout($kontekst, $idLang))->vars($oferta, $wiadomosc, $adresPdf);
 
         $zalacznik = $this->attachment($oferta);
         $temat = $this->subject($oferta, $zmienne, $nazwaSklepu);

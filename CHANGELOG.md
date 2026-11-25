@@ -4,6 +4,21 @@ All notable changes to this module are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the versioning follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2026-11-25
+
+### Changed
+
+- The offer email has a new layout, the same as the Quince Contacts emails: the
+  shop's email logo, a bar in the shop colour, the content on a white card and a
+  dark footer with the seller details. Colours and fonts come from the engine
+  appearance settings (Quince → Appearance), the seller details from Shop
+  Parameters → Contact → Stores.
+- The email shows the offer number and validity date, the items with SKU,
+  quantity and amounts (gross, net below), the total, a button to download the PDF
+  and the contact person, the same one as in the PDF. The PDF is still attached.
+- The validity date is written the way the offer language writes dates
+  (25.12.2026 in Polish).
+
 ## [0.4.10] - 2026-11-16
 
 ### Fixed

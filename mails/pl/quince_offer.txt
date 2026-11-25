@@ -3,6 +3,6 @@
 
 {message}
 
-Ważna do: {valid_until}
+Ważna do: {valid_until_date}
 
 {shop_url}
