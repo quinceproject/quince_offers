@@ -4,6 +4,15 @@ All notable changes to this module are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the versioning follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.1] - 2026-11-25
+
+### Fixed
+
+- Offer email in Outlook for Windows: the elements no longer stick together (the
+  greeting and the offer box, the button and the text around it), and the button
+  has its full height and side padding. Outlook ignores spacing on `div` blocks and
+  links, so the spacing now sits on table cells.
+
 ## [0.5.0] - 2026-11-25
 
 ### Changed

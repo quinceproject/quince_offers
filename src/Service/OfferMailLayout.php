@@ -82,12 +82,11 @@ final class OfferMailLayout
             '{valid_until_date}' => $this->e($this->date((string) ($oferta['valid_until'] ?? ''))),
             '{message_block}' => trim($wiadomoscSklepu) === ''
                 ? ''
-                : '<div style="padding:0 0 24px">' . $wiadomoscSklepu . '</div>',
+                : $this->block($wiadomoscSklepu, '0 0 24px'),
             '{summary_box}' => $this->summary($oferta),
             '{items_table}' => $this->items($oferta['items'] ?? [], $waluta, (float) $oferta['total_net'], (float) $oferta['total_gross']),
-            '{pdf_button}' => $adresPdf === '' ? '' : $this->button($this->trans('Download the offer (PDF)'), $adresPdf, $glowny, $naglowki)
-                . '<div style="font-size:13px;line-height:20px;color:' . self::MUTED . '">'
-                . $this->e($this->trans('The full offer in PDF is also attached to this message.')) . '</div>',
+            '{pdf_button}' => $adresPdf === '' ? '' : $this->block($this->button($this->trans('Download the offer (PDF)'), $adresPdf, $glowny, $naglowki), '32px 0 12px')
+                . $this->block($this->e($this->trans('The full offer in PDF is also attached to this message.')), '0', 'font-size:13px;line-height:20px;color:' . self::MUTED),
             '{expert_card}' => $this->expertCard(),
         ];
     }
@@ -206,7 +205,7 @@ final class OfferMailLayout
         $dane = '<div style="font-weight:700">' . $this->e($imie) . '</div>';
 
         if ($stanowisko !== '') {
-            $dane .= '<div style="color:' . self::MUTED . ';font-size:13px;padding:0 0 6px">' . $this->e($stanowisko) . '</div>';
+            $dane .= $this->block($this->e($stanowisko), '0 0 6px', 'color:' . self::MUTED . ';font-size:13px;line-height:20px');
         }
 
         if ($telefon !== '') {
@@ -244,18 +243,41 @@ final class OfferMailLayout
         return is_string($telefon) ? trim($telefon) : '';
     }
 
+    /**
+     * Przycisk. Wypełnienie i wysokość siedzą na komórce, nie na odnośniku:
+     * Outlook na Windows (silnik Worda) pomija wypełnienie odnośnika i bez
+     * tego rysuje sam tekst na wąskim pasku koloru.
+     */
     private function button(string $tekst, string $adres, string $kolor, string $font): string
     {
-        return '<table role="presentation" cellpadding="0" cellspacing="0" style="margin:28px 0 8px"><tr>'
-            . '<td style="background:' . $kolor . '"><a href="' . $this->e($adres) . '" style="display:inline-block;padding:0 22px;line-height:46px;font-family:'
-            . $this->stack($font) . ';font-size:13px;font-weight:700;letter-spacing:0.65px;text-transform:uppercase;color:' . $this->textOn($kolor)
-            . ';text-decoration:none">' . $this->e($tekst) . '</a></td></tr></table>';
+        $styl = 'font-family:' . $this->stack($font) . ';font-size:13px;font-weight:700;letter-spacing:0.65px;text-transform:uppercase;color:'
+            . $this->textOn($kolor) . ';text-decoration:none';
+
+        return '<table role="presentation" cellpadding="0" cellspacing="0"><tr>'
+            . '<td align="center" valign="middle" height="46" bgcolor="' . $kolor . '" style="background:' . $kolor
+            . ';height:46px;padding:0 24px;mso-padding-alt:0 24px;' . $styl . '">'
+            . '<a href="' . $this->e($adres) . '" style="display:inline-block;line-height:46px;' . $styl . '">' . $this->e($tekst) . '</a>'
+            . '</td></tr></table>';
     }
 
     private function label(string $tekst, string $odstep = '24px 0 6px'): string
     {
-        return '<div style="font-size:12px;line-height:20px;font-weight:700;letter-spacing:0.6px;text-transform:uppercase;color:'
-            . self::MUTED . ';padding:' . $odstep . '">' . $this->e($tekst) . '</div>';
+        return $this->block(
+            $this->e($tekst),
+            $odstep,
+            'font-size:12px;line-height:20px;font-weight:700;letter-spacing:0.6px;text-transform:uppercase;color:' . self::MUTED
+        );
+    }
+
+    /**
+     * Odstęp jako wypełnienie komórki tabeli. Outlook na Windows pomija
+     * marginesy i wypełnienie bloków `div`, więc elementy się sklejają;
+     * wypełnienie komórki stosuje każdy program pocztowy.
+     */
+    private function block(string $html, string $odstep, string $styl = ''): string
+    {
+        return '<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td style="padding:' . $odstep
+            . ($styl !== '' ? ';' . $styl : '') . '">' . $html . '</td></tr></table>';
     }
 
     // ------------------------------------------------------------------ pomocnicze
